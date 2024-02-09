@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { useQuery } from "@tanstack/react-query";
-import { TextInput, Title } from "@mantine/core";
+import { Button, Container, Stack, TextInput, Title } from "@mantine/core";
+import { Layout } from "./Layout";
 
 function App() {
   const [text, setText] = useState("");
@@ -9,7 +10,7 @@ function App() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["directory", text],
     queryFn: async () => {
-      return (await invoke("greet", { name: text })) as string;
+      return await invoke<string>("greet", { name: text });
     }
   });
 
@@ -19,20 +20,24 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <Title>Iterate over a directory</Title>
+    <Layout>
+      <Container>
+        <Title>Iterate over a directory</Title>
 
-      <form className="row" onSubmit={onSubmit}>
-        <TextInput
-          label="Folder"
-          value={text}
-          onChange={(event) => setText(event.currentTarget.value)}
-        />
-        <button type="submit">Greet</button>
-      </form>
+        <form onSubmit={onSubmit}>
+          <Stack>
+            <TextInput
+              label="Folder"
+              value={text}
+              onChange={(event) => setText(event.currentTarget.value)}
+            />
+            <Button type="submit">Greet</Button>
+          </Stack>
+        </form>
 
-      <pre>{isLoading ? "Loading..." : isError ? "Error" : data}</pre>
-    </div>
+        <pre>{isLoading ? "Loading..." : isError ? "Error" : data}</pre>
+      </Container>
+    </Layout>
   );
 }
 
