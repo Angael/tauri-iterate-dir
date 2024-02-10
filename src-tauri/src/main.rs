@@ -1,10 +1,22 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use std::{thread, time::Duration};
+
+fn search(name: &str) -> Vec<String> {
+    vec![name.to_string(), "result1".to_string(), "result2".to_string()]
+}
+
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+ async fn greet(name: &str) -> Result<String, ()>  {
+    // new thread
+    let _name = name.to_string();
+    let handle = thread::spawn(move || {
+        thread::sleep(Duration::from_secs(1));
+        search(&_name) // Pass a reference to the 'static string
+    });
+    Ok(handle.join().unwrap().join(" ").to_string())
 }
 
 fn main() {
