@@ -22,6 +22,7 @@ const queryClient = new QueryClient();
 
 // Your theme configuration is merged with default theme
 const theme = createTheme({
+  primaryColor: "teal",
   fontFamily: "Montserrat, sans-serif",
   defaultRadius: "md",
 });
