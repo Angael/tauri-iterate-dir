@@ -1,3 +1,4 @@
+import { Container, Title } from "@mantine/core";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/about")({
@@ -5,5 +6,9 @@ export const Route = createLazyFileRoute("/about")({
 });
 
 function About() {
-  return <div className="p-2">Hello from About!</div>;
+  return (
+    <Container>
+      <Title>About this app</Title>
+    </Container>
+  );
 }
