@@ -1,4 +1,4 @@
-import { Container, Text, TextInput, Title } from "@mantine/core";
+import { Container, List, TextInput, Title } from "@mantine/core";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { invoke } from "@tauri-apps/api/tauri";
@@ -12,15 +12,19 @@ export const Route = createLazyFileRoute("/")({
 function Index() {
   const [text, setText] = useState("Teścik");
 
+  // eslint-disable-next-line no-unused-vars
   const throttledText = useDebounce(text, 250);
-  const { data, isPending, isFetching, isError } = useQuery({
-    queryKey: ["directory", throttledText],
+
+  const dir = useQuery({
+    queryKey: ["list_files", text],
     queryFn: async () => {
-      return await invoke<string>("greet", { name: throttledText });
+      return await invoke<string[]>("list_files", { dir: text });
     },
     staleTime: 1000,
     placeholderData: keepPreviousData,
   });
+
+  console.log({ dir });
 
   return (
     <Container>
@@ -32,17 +36,11 @@ function Index() {
         onChange={(event) => setText(event.currentTarget.value)}
       />
 
-      {isPending ? (
-        <>
-          <p>Loading...</p>
-        </>
-      ) : (
-        <>
-          <pre style={{ opacity: isFetching ? 0.5 : 1 }}>{data}</pre>
-        </>
-      )}
-
-      {isError && <Text c="red">Error fetching data</Text>}
+      <List>
+        {dir.isPending && <List.Item>Loading...</List.Item>}
+        {dir.isError && <List.Item>Error: {dir.error.message}</List.Item>}
+        {dir.data?.map((file) => <List.Item key={file}>{file}</List.Item>)}
+      </List>
     </Container>
   );
 }
