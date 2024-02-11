@@ -9,8 +9,8 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { useDebounce } from "use-debounce";
 import { createLazyFileRoute } from "@tanstack/react-router";
+import { useDebounce } from "@uidotdev/usehooks";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -19,11 +19,11 @@ export const Route = createLazyFileRoute("/")({
 function Index() {
   const [text, setText] = useState("Teścik");
 
-  const [debouncedText] = useDebounce(text, 500);
+  const throttledText = useDebounce(text, 250);
   const { data, isPending, isFetching, isError } = useQuery({
-    queryKey: ["directory", debouncedText],
+    queryKey: ["directory", throttledText],
     queryFn: async () => {
-      return await invoke<string>("greet", { name: debouncedText });
+      return await invoke<string>("greet", { name: throttledText });
     },
     staleTime: 1000,
     placeholderData: keepPreviousData,
@@ -48,6 +48,8 @@ function Index() {
           <Button type="submit">Greet</Button>
         </Stack>
       </form>
+
+      {throttledText}
 
       {isPending ? (
         <>
