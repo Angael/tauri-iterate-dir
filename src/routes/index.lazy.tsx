@@ -1,16 +1,9 @@
-import { useState } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
+import { Container, Text, TextInput, Title } from "@mantine/core";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import {
-  Button,
-  Container,
-  Stack,
-  Text,
-  TextInput,
-  Title,
-} from "@mantine/core";
 import { createLazyFileRoute } from "@tanstack/react-router";
+import { invoke } from "@tauri-apps/api/tauri";
 import { useDebounce } from "@uidotdev/usehooks";
+import { useState } from "react";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -29,27 +22,15 @@ function Index() {
     placeholderData: keepPreviousData,
   });
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // TODO
-  };
-
   return (
     <Container>
       <Title>Iterate over a directory</Title>
 
-      <form onSubmit={onSubmit}>
-        <Stack>
-          <TextInput
-            label="Folder"
-            value={text}
-            onChange={(event) => setText(event.currentTarget.value)}
-          />
-          <Button type="submit">Greet</Button>
-        </Stack>
-      </form>
-
-      {throttledText}
+      <TextInput
+        label="Folder"
+        value={text}
+        onChange={(event) => setText(event.currentTarget.value)}
+      />
 
       {isPending ? (
         <>
