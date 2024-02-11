@@ -8,7 +8,7 @@ type Props = {
 };
 
 export function Layout({ children }: Props) {
-  const [opened, { toggle }] = useDisclosure();
+  const [opened, { toggle, close }] = useDisclosure();
 
   return (
     <AppShell
@@ -30,10 +30,10 @@ export function Layout({ children }: Props) {
 
       <AppShell.Navbar p="md" style={{ gap: "var(--mantine-spacing-sm" }}>
         {/* TODO: add active styles */}
-        <Button component={Link} to="/">
+        <Button component={Link} to="/" onClick={close}>
           Home
         </Button>
-        <Button component={Link} to="/about">
+        <Button component={Link} to="/about" onClick={close}>
           About
         </Button>
       </AppShell.Navbar>
