@@ -15,14 +15,14 @@ export function Layout({ children }: Props) {
       navbar={{
         width: 300,
         breakpoint: "sm",
-        collapsed: { mobile: !opened }
+        collapsed: { mobile: !opened },
       }}
       padding="md"
     >
       <AppShell.Header>
         <Flex gap="md" h="100%" align="center" p="sm">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <img src="/logo.avif" alt="" className={css.logo} />
+          <img src="logo.jpg" alt="" className={css.logo} />
           <Title>Tauri App</Title>
         </Flex>
       </AppShell.Header>

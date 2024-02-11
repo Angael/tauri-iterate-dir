@@ -9,7 +9,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { Layout } from "./Layout";
+import { Layout } from "./components/Layout";
 import { useDebounce } from "use-debounce";
 
 function App() {
