@@ -1,30 +1,33 @@
-import { Container, List, TextInput, Title } from "@mantine/core";
+import { Container, Text, TextInput, Title } from "@mantine/core";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
+import { Store, useStore } from "@tanstack/react-store";
 import { invoke } from "@tauri-apps/api/tauri";
 import { useDebounce } from "@uidotdev/usehooks";
-import { useState } from "react";
+import FileList from "../components/file-list/FileList";
 
 export const Route = createLazyFileRoute("/")({
-  component: Index,
+  component: Index
 });
 
+export const pathStore = new Store("/");
+
 function Index() {
-  const [text, setText] = useState("Teścik");
+  const pathInput = useStore(pathStore);
 
   // eslint-disable-next-line no-unused-vars
-  const throttledText = useDebounce(text, 250);
+  const throttledText = useDebounce(pathInput, 250);
 
   const dir = useQuery({
-    queryKey: ["list_files", text],
+    queryKey: ["list_files", throttledText],
     queryFn: async () => {
-      return await invoke<string[]>("list_files", { dir: text });
+      return await invoke<string[]>("list_files", { dir: throttledText });
     },
     staleTime: 1000,
     placeholderData: keepPreviousData,
+    retry: 2,
+    retryDelay: 1000
   });
-
-  console.log({ dir });
 
   return (
     <Container>
@@ -32,15 +35,26 @@ function Index() {
 
       <TextInput
         label="Folder"
-        value={text}
-        onChange={(event) => setText(event.currentTarget.value)}
+        value={pathInput}
+        onChange={(event) =>
+          pathStore.setState((_) => event.currentTarget.value)
+        }
+        error={
+          dir.failureCount > 0
+            ? `Can't read directory. ${dir.failureCount}/3 times. ${dir.error || ""}`
+            : ""
+        }
       />
 
-      <List>
-        {dir.isPending && <List.Item>Loading...</List.Item>}
-        {dir.isError && <List.Item>Error: {dir.error.message}</List.Item>}
-        {dir.data?.map((file) => <List.Item key={file}>{file}</List.Item>)}
-      </List>
+      {dir.isPending && <Text>Loading...</Text>}
+      {dir.isError && <Text c="red">Error: {dir.error?.message}</Text>}
+
+      {dir.data && (
+        <FileList
+          paths={dir.data}
+          onClickPath={(path) => pathStore.setState((_) => path)}
+        />
+      )}
     </Container>
   );
 }
