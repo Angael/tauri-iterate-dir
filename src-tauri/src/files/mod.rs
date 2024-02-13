@@ -1,7 +1,11 @@
 use std::fs;
 
+mod file_struct;
+
+
+
 #[tauri::command]
-pub fn list_files(dir: String) -> Result<Vec<String>, String> {
+pub fn list_files(dir: String) -> Result<Vec<file_struct::File>, String> {
     let mut files = vec![];
     
     let entries = fs::read_dir(dir);
@@ -12,7 +16,15 @@ pub fn list_files(dir: String) -> Result<Vec<String>, String> {
         let entry = entry.expect("Error reading entry");
         let path = entry.path();
         let path_str = path.to_str().unwrap().to_string();
-        files.push(path_str);
+
+        let is_file = path.is_file();
+        let is_dir = path.is_dir();
+         
+        files.push(file_struct::File {
+            name: path_str,
+            is_file,
+            is_dir,
+        });
     }
     Ok(files)
 }

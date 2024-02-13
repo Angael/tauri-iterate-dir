@@ -5,6 +5,7 @@ import { Store, useStore } from "@tanstack/react-store";
 import { invoke } from "@tauri-apps/api/tauri";
 import { useDebounce } from "@uidotdev/usehooks";
 import FileList from "../components/file-list/FileList";
+import type { File } from "../components/file-list/File.type";
 
 export const Route = createLazyFileRoute("/")({
   component: Index
@@ -21,13 +22,15 @@ function Index() {
   const dir = useQuery({
     queryKey: ["list_files", throttledText],
     queryFn: async () => {
-      return await invoke<string[]>("list_files", { dir: throttledText });
+      return await invoke<File[]>("list_files", { dir: throttledText });
     },
     staleTime: 1000,
     placeholderData: keepPreviousData,
     retry: 2,
     retryDelay: 1000
   });
+
+  console.log(dir.data);
 
   return (
     <Container>
