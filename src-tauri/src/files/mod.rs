@@ -8,6 +8,8 @@ mod file_struct;
 pub fn list_files(dir: String) -> Result<Vec<file_struct::File>, String> {
     let mut files = vec![];
     
+    // IF "" then special case, list /
+    
     let entries = fs::read_dir(dir);
     if entries.is_err() {
         return Err("Error reading directory".to_string());
