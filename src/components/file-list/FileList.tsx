@@ -4,7 +4,7 @@ import { IconFolder, IconFile } from "@tabler/icons-react";
 
 type Props = {
   paths: File[];
-  onClickPath: (path: string) => void;
+  onClickPath: (path: File) => void;
 };
 
 const FileList = ({ paths, onClickPath }: Props) => {
@@ -15,14 +15,14 @@ const FileList = ({ paths, onClickPath }: Props) => {
     if (!a.isDir && b.isDir) {
       return 1;
     }
-    return a.name.localeCompare(b.name);
+    return a.path.localeCompare(b.path);
   });
 
   return sortedPaths.map((file) => (
     <NavLink
-      key={file.name}
-      onClick={() => onClickPath(file.name)}
-      label={file.name}
+      key={file.path}
+      onClick={() => onClickPath(file)}
+      label={file.path}
       c={file.isDir ? "yellow.1" : "gray"}
       style={{}}
       leftSection={file.isDir ? <IconFolder /> : <IconFile />}

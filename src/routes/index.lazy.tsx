@@ -1,12 +1,11 @@
 import { Button, Container, Flex, Text, TextInput, Title } from "@mantine/core";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { Store, useStore } from "@tanstack/react-store";
+import { Store } from "@tanstack/react-store";
 import { invoke } from "@tauri-apps/api/tauri";
-import { useDebouncedCallback } from "use-debounce";
 import type { File } from "../components/file-list/File.type";
 import FileList from "../components/file-list/FileList";
-import { useEffect, useRef } from "react";
+import { usePathInput } from "../utils/usePathInput";
 
 export const Route = createLazyFileRoute("/")({
   component: Index
@@ -15,56 +14,38 @@ export const Route = createLazyFileRoute("/")({
 export const pathStore = new Store("/");
 
 function Index() {
-  const pathInput = useStore(pathStore);
+  const { path, setPath, setPathDebounced, goBack, inputRef } =
+    usePathInput(pathStore);
 
   const dir = useQuery({
-    queryKey: ["list_files", pathInput],
+    queryKey: ["list_files", path],
     queryFn: async () => {
-      return await invoke<File[]>("list_files", { dir: pathInput });
+      return await invoke<File[]>("list_files", { dir: path });
     },
     placeholderData: keepPreviousData,
     retry: 2,
     retryDelay: 1000
   });
 
-  const setPathDebounced = useDebouncedCallback(
-    (path: string) => {
-      console.log(1);
-      pathStore.setState((_) => path);
-    },
-    250,
-    { leading: false }
-  );
-
-  const setPathNow = (path: string) => {
-    setPathDebounced(path);
-    setPathDebounced.flush();
-  };
-
-  const inputRef = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.value = pathInput ?? "";
+  const onClickPath = (file: File) => {
+    if (file.isDir) {
+      setPath(file.path);
+    } else {
+      console.log("Open file", file.path);
     }
-  }, [pathInput]);
+  };
 
   return (
     <Container>
       <Title>Iterate over a directory</Title>
 
       <Flex gap={16} align="flex-end" justify="flex-start">
-        <Button onClick={() => setPathNow("/")}>Home</Button>
-        <Button
-          onClick={() =>
-            setPathNow(pathInput.split(/[\\/]/).slice(0, -1).join("/"))
-          }
-        >
-          Back
-        </Button>
+        <Button onClick={() => setPath("/")}>Home</Button>
+        <Button onClick={goBack}>Back</Button>
         <TextInput
           label="Folder"
           ref={inputRef}
-          defaultValue={pathInput}
+          defaultValue={path}
           onChange={(event) => setPathDebounced(event.currentTarget.value)}
           error={
             dir.failureCount > 0
@@ -77,7 +58,7 @@ function Index() {
       {dir.isPending && <Text>Loading...</Text>}
       {dir.isError && <Text c="red">Error: {dir.error?.message}</Text>}
 
-      {dir.data && <FileList paths={dir.data} onClickPath={setPathNow} />}
+      {dir.data && <FileList paths={dir.data} onClickPath={onClickPath} />}
     </Container>
   );
 }

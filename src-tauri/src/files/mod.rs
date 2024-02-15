@@ -22,11 +22,7 @@ pub fn list_files(dir: String) -> Result<Vec<file_struct::File>, String> {
         let is_file = path.is_file();
         let is_dir = path.is_dir();
          
-        files.push(file_struct::File {
-            name: path_str,
-            is_file,
-            is_dir,
-        });
+        files.push(file_struct::File::new(path_str, is_file, is_dir));
     }
     Ok(files)
 }
