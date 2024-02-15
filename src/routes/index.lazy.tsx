@@ -1,4 +1,4 @@
-import { Button, Container, Flex, Text, TextInput, Title } from "@mantine/core";
+import { Button, Flex, Text, TextInput, Title } from "@mantine/core";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { Store } from "@tanstack/react-store";
@@ -36,7 +36,7 @@ function Index() {
   };
 
   return (
-    <Container>
+    <div>
       <Title>Iterate over a directory</Title>
 
       <Flex gap={16} align="flex-end" justify="flex-start">
@@ -59,6 +59,6 @@ function Index() {
       {dir.isError && <Text c="red">Error: {dir.error?.message}</Text>}
 
       {dir.data && <FileList paths={dir.data} onClickPath={onClickPath} />}
-    </Container>
+    </div>
   );
 }
