@@ -1,13 +1,15 @@
-import { NavLink } from "@mantine/core";
+import { SimpleGrid, Stack } from "@mantine/core";
+import { DisplayMode } from "../display-mode/DisplayModeToggle";
 import type { File } from "./File.type";
-import { IconFolder, IconFile } from "@tabler/icons-react";
+import FileItem from "./file-item/FileItem";
 
 type Props = {
   paths: File[];
   onClickPath: (path: File) => void;
+  displayMode: keyof typeof DisplayMode;
 };
 
-const FileList = ({ paths, onClickPath }: Props) => {
+const FileList = ({ paths, onClickPath, displayMode }: Props) => {
   const sortedPaths = paths.toSorted((a, b) => {
     if (a.isDir && !b.isDir) {
       return -1;
@@ -18,16 +20,23 @@ const FileList = ({ paths, onClickPath }: Props) => {
     return a.path.localeCompare(b.path);
   });
 
-  return sortedPaths.map((file) => (
-    <NavLink
-      key={file.path}
-      onClick={() => onClickPath(file)}
-      label={file.path}
-      c={file.isDir ? "yellow.1" : "gray"}
-      style={{}}
-      leftSection={file.isDir ? <IconFolder /> : <IconFile />}
-    />
-  ));
+  if (displayMode === "grid_sm") {
+    return (
+      <SimpleGrid cols={{ base: 2, sm: 3, md: 4, lg: 5 }}>
+        {sortedPaths.map((file) => (
+          <FileItem file={file} onClick={onClickPath} />
+        ))}
+      </SimpleGrid>
+    );
+  }
+
+  return (
+    <Stack gap={1}>
+      {sortedPaths.map((file) => (
+        <FileItem file={file} onClick={onClickPath} />
+      ))}
+    </Stack>
+  );
 };
 
 export default FileList;

@@ -1,21 +1,27 @@
 import { Button, Flex, Text, TextInput, Title } from "@mantine/core";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { Store } from "@tanstack/react-store";
+import { Store, useStore } from "@tanstack/react-store";
 import { invoke } from "@tauri-apps/api/tauri";
 import type { File } from "../components/file-list/File.type";
 import FileList from "../components/file-list/FileList";
 import { usePathInput } from "../utils/usePathInput";
+import DisplayModeToggle, {
+  DisplayMode
+} from "../components/display-mode/DisplayModeToggle";
 
 export const Route = createLazyFileRoute("/")({
   component: Index
 });
 
-export const pathStore = new Store("/");
+const pathStore = new Store("/");
+const displayModeStore = new Store<keyof typeof DisplayMode>(DisplayMode.list);
 
 function Index() {
   const { path, setPath, setPathDebounced, goBack, inputRef } =
     usePathInput(pathStore);
+
+  const displayMode = useStore(displayModeStore);
 
   const dir = useQuery({
     queryKey: ["list_files", path],
@@ -42,6 +48,10 @@ function Index() {
       <Flex gap={16} align="flex-end" justify="flex-start">
         <Button onClick={() => setPath("/")}>Home</Button>
         <Button onClick={goBack}>Back</Button>
+        <DisplayModeToggle
+          value={displayMode}
+          setValue={(val) => displayModeStore.setState(() => val)}
+        />
         <TextInput
           label="Folder"
           ref={inputRef}
@@ -58,7 +68,13 @@ function Index() {
       {dir.isPending && <Text>Loading...</Text>}
       {dir.isError && <Text c="red">Error: {dir.error?.message}</Text>}
 
-      {dir.data && <FileList paths={dir.data} onClickPath={onClickPath} />}
+      {dir.data && (
+        <FileList
+          paths={dir.data}
+          onClickPath={onClickPath}
+          displayMode={displayMode}
+        />
+      )}
     </div>
   );
 }
