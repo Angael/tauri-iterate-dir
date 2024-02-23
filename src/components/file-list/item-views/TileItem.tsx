@@ -16,6 +16,7 @@ const TileItem = ({ file, onClick }: Props) => {
     rootMargin: "200px"
   });
   const isImg = file.path.match(/\.(jpeg|jpg|gif|png|svg|webp)$/i);
+  const isVideo = file.path.match(/\.(mp4|webm|ogg)$/i);
 
   const src = entry?.isIntersecting ? convertFileSrc(file.path) : "";
 
@@ -23,11 +24,16 @@ const TileItem = ({ file, onClick }: Props) => {
     <div className={css.tileItem} ref={ref} onClick={() => onClick(file)}>
       <div className={css.previewWrapper}>
         {file.isDir ? (
-          <IconFolder />
-        ) : isImg ? (
-          <img src={src} alt="" className={css.img} />
+          <>
+            <IconFolder />
+            <p>{file.path}</p>
+          </>
         ) : (
-          <IconFile />
+          <>
+            {!isImg && !isVideo && <IconFile />}
+            {isImg && <img src={src} alt="" className={css.img} />}
+            {isVideo && <video src={src} controls className={css.video} />}
+          </>
         )}
       </div>
     </div>
