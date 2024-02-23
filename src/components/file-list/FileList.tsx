@@ -1,12 +1,19 @@
-import { SimpleGrid, Stack } from "@mantine/core";
+import { Stack } from "@mantine/core";
 import { DisplayMode } from "../display-mode/DisplayModeToggle";
 import type { File } from "./File.type";
-import FileItem from "./file-item/FileItem";
+import css from "./FileList.module.css";
+import NavLinkItem from "./item-views/NavLinkItem";
+import TileItem from "./item-views/TileItem";
 
 type Props = {
   paths: File[];
   onClickPath: (path: File) => void;
   displayMode: keyof typeof DisplayMode;
+};
+
+const gridSizes = {
+  grid_sm: "250px",
+  grid_lg: "400px"
 };
 
 const FileList = ({ paths, onClickPath, displayMode }: Props) => {
@@ -20,20 +27,23 @@ const FileList = ({ paths, onClickPath, displayMode }: Props) => {
     return a.path.localeCompare(b.path);
   });
 
-  if (displayMode === "grid_sm") {
+  if (displayMode === "grid_sm" || displayMode === "grid_lg") {
     return (
-      <SimpleGrid cols={{ base: 2, sm: 3, md: 4, lg: 5 }}>
+      <div
+        className={css.itemGrid}
+        style={{ "--grid-size": gridSizes[displayMode] } as any}
+      >
         {sortedPaths.map((file) => (
-          <FileItem file={file} onClick={onClickPath} />
+          <TileItem file={file} onClick={onClickPath} />
         ))}
-      </SimpleGrid>
+      </div>
     );
   }
 
   return (
     <Stack gap={1}>
       {sortedPaths.map((file) => (
-        <FileItem file={file} onClick={onClickPath} />
+        <NavLinkItem file={file} onClick={onClickPath} />
       ))}
     </Stack>
   );
