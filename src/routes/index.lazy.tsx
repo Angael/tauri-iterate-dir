@@ -1,4 +1,4 @@
-import { Button, Flex, Text, TextInput, Title } from "@mantine/core";
+import { Button, Flex, Modal, Text, TextInput, Title } from "@mantine/core";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { Store, useStore } from "@tanstack/react-store";
@@ -9,6 +9,8 @@ import { usePathInput } from "../utils/usePathInput";
 import DisplayModeToggle, {
   DisplayMode
 } from "../components/display-mode/DisplayModeToggle";
+import { useState } from "react";
+import TileItem from "../components/file-list/item-views/TileItem";
 
 export const Route = createLazyFileRoute("/")({
   component: Index
@@ -22,6 +24,7 @@ function Index() {
     usePathInput(pathStore);
 
   const displayMode = useStore(displayModeStore);
+  const [openFile, setOpenFile] = useState<File | null>(null);
 
   const dir = useQuery({
     queryKey: ["list_files", path],
@@ -38,6 +41,7 @@ function Index() {
       setPath(file.path);
     } else {
       console.log("Open file", file.path);
+      setOpenFile(file);
     }
   };
 
@@ -74,6 +78,22 @@ function Index() {
           onClickPath={onClickPath}
           displayMode={displayMode}
         />
+      )}
+
+      {openFile && (
+        <Modal
+          opened={!!openFile}
+          onClose={() => setOpenFile(null)}
+          title="File"
+          centered
+          overlayProps={{
+            backgroundOpacity: 0.55,
+            blur: 3
+          }}
+          size={"xl"}
+        >
+          <TileItem file={openFile} onClick={() => {}} />
+        </Modal>
       )}
     </div>
   );
