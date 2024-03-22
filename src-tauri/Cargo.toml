@@ -1,6 +1,6 @@
 [package]
 name = "iterate-dir"
-version = "0.0.5"
+version = "0.0.6"
 description = "A Tauri App"
 authors = ["Krzysztof Widacki"]
 edition = "2021"
