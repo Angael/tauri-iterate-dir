@@ -6,11 +6,15 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "iterate-dir",
-    "version": "0.0.0"
+    "productName": "camille",
+    "version": "0.0.6"
   },
   "tauri": {
     "allowlist": {
+      "protocol": {
+        "asset": true,
+        "assetScope": ["**/*"]
+      },
       "all": false,
       "shell": {
         "all": false,
@@ -21,18 +25,18 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "iterate-dir",
-        "width": 800,
-        "height": 600
+        "title": "Camille",
+        "width": 1280,
+        "height": 720
       }
     ],
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost; style-src 'self' 'unsafe-inline';"
     },
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.widacki.iterate-dir",
+      "identifier": "com.widacki.camille",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",

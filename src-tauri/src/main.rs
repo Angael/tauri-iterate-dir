@@ -3,6 +3,9 @@
 
 use std::{thread, time::Duration};
 
+// Usefull: https://stackoverflow.com/questions/26388861/how-can-i-include-a-module-from-another-file-from-the-same-project
+mod files;
+
 fn search(name: &str) -> Vec<String> {
     vec![name.to_string(), "result1".to_string(), "result2".to_string()]
 }
@@ -10,7 +13,6 @@ fn search(name: &str) -> Vec<String> {
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
  async fn greet(name: &str) -> Result<String, ()>  {
-    // new thread
     let _name = name.to_string();
     let handle = thread::spawn(move || {
         thread::sleep(Duration::from_secs(1));
@@ -21,7 +23,7 @@ fn search(name: &str) -> Vec<String> {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![greet, files::list_files])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

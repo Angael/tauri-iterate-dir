@@ -1,48 +1,122 @@
-import { Container, Text, TextInput, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Flex,
+  Modal,
+  Text,
+  TextInput
+} from "@mantine/core";
+import { mdiArrowLeft, mdiHome, mdiStar } from "@mdi/js";
+import Icon from "@mdi/react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
+import { Store, useStore } from "@tanstack/react-store";
 import { invoke } from "@tauri-apps/api/tauri";
-import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
+import DisplayModeToggle, {
+  DisplayMode
+} from "../components/display-mode/DisplayModeToggle";
+import type { File } from "../components/file-list/File.type";
+import FileList from "../components/file-list/FileList";
+import TileItem from "../components/file-list/item-views/TileItem";
+import { usePathInput } from "../utils/usePathInput";
+import css from "./index.module.css";
 
 export const Route = createLazyFileRoute("/")({
-  component: Index,
+  component: Index
 });
 
-function Index() {
-  const [text, setText] = useState("Teścik");
+const pathStore = new Store("C:/");
+const displayModeStore = new Store<keyof typeof DisplayMode>(DisplayMode.list);
 
-  const throttledText = useDebounce(text, 250);
-  const { data, isPending, isFetching, isError } = useQuery({
-    queryKey: ["directory", throttledText],
+function Index() {
+  const { path, setPath, setPathDebounced, goBack, inputRef } =
+    usePathInput(pathStore);
+
+  const displayMode = useStore(displayModeStore);
+  const [openFile, setOpenFile] = useState<File | null>(null);
+
+  const dir = useQuery({
+    queryKey: ["list_files", path],
     queryFn: async () => {
-      return await invoke<string>("greet", { name: throttledText });
+      return await invoke<File[]>("list_files", { dir: path });
     },
-    staleTime: 1000,
     placeholderData: keepPreviousData,
+    retry: 2,
+    retryDelay: 1000
   });
 
+  const onClickPath = (file: File) => {
+    if (file.isDir) {
+      setPath(file.path);
+    } else {
+      console.log("Open file", file.path);
+      setOpenFile(file);
+    }
+  };
+
   return (
-    <Container>
-      <Title>Iterate over a directory</Title>
+    <>
+      <nav className={css.actionBar}>
+        <Button
+          leftSection={<Icon path={mdiHome} size={1} />}
+          variant="light"
+          onClick={() => setPath("/")}
+          style={{ flexShrink: 0 }}
+        >
+          Home
+        </Button>
+        <ActionIcon aria-label="Go back" variant="transparent" onClick={goBack}>
+          <Icon path={mdiArrowLeft} size={1} />
+        </ActionIcon>
+        <TextInput
+          placeholder="Folder"
+          ref={inputRef}
+          defaultValue={path}
+          onChange={(event) => setPathDebounced(event.currentTarget.value)}
+          error={
+            dir.failureCount > 0
+              ? `Can't read directory. ${dir.failureCount}/3 times. ${dir.error || ""}`
+              : ""
+          }
+        />
+        <ActionIcon aria-label="Favourite" variant="transparent" disabled>
+          <Icon path={mdiStar} size={1} />
+        </ActionIcon>
+        <Flex ml="auto">
+          <DisplayModeToggle
+            value={displayMode}
+            setValue={(val) => displayModeStore.setState(() => val)}
+          />
+        </Flex>
+      </nav>
 
-      <TextInput
-        label="Folder"
-        value={text}
-        onChange={(event) => setText(event.currentTarget.value)}
-      />
+      {dir.isPending && <Text>Loading...</Text>}
+      {dir.isError && <Text c="red">Error: {dir.error?.message}</Text>}
 
-      {isPending ? (
-        <>
-          <p>Loading...</p>
-        </>
-      ) : (
-        <>
-          <pre style={{ opacity: isFetching ? 0.5 : 1 }}>{data}</pre>
-        </>
+      {dir.data && (
+        <FileList
+          paths={dir.data}
+          onClickPath={onClickPath}
+          displayMode={displayMode}
+        />
       )}
 
-      {isError && <Text c="red">Error fetching data</Text>}
-    </Container>
+      {openFile && (
+        <Modal
+          opened={!!openFile}
+          onClose={() => setOpenFile(null)}
+          title="File"
+          centered
+          overlayProps={{
+            backgroundOpacity: 0.55,
+            blur: 3
+          }}
+          size={"xl"}
+        >
+          <TileItem file={openFile} onClick={() => {}} />
+        </Modal>
+      )}
+    </>
   );
 }
