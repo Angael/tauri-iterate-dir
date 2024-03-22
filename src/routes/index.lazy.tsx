@@ -1,4 +1,6 @@
-import { Button, Flex, Modal, Text, TextInput } from "@mantine/core";
+import { Button, Modal, Text, TextInput } from "@mantine/core";
+import { mdiArrowLeft, mdiHome } from "@mdi/js";
+import Icon from "@mdi/react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { Store, useStore } from "@tanstack/react-store";
@@ -12,8 +14,6 @@ import FileList from "../components/file-list/FileList";
 import TileItem from "../components/file-list/item-views/TileItem";
 import { usePathInput } from "../utils/usePathInput";
 import css from "./index.module.css";
-import Icon from "@mdi/react";
-import { mdiArrowLeft, mdiHome } from "@mdi/js";
 
 export const Route = createLazyFileRoute("/")({
   component: Index
