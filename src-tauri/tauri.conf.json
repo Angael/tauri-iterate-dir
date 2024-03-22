@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "Camille",
+    "productName": "camille",
     "version": "0.0.1"
   },
   "tauri": {
@@ -27,8 +27,7 @@
         "resizable": true,
         "title": "Camille",
         "width": 1280,
-        "height": 720,
-        "maximized": true
+        "height": 720
       }
     ],
     "security": {
@@ -37,7 +36,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.widacki.Camille",
+      "identifier": "com.widacki.camille",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",

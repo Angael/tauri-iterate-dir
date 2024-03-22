@@ -1,16 +1,19 @@
-import { Button, Flex, Modal, Text, TextInput, Title } from "@mantine/core";
+import { Button, Flex, Modal, Text, TextInput } from "@mantine/core";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { Store, useStore } from "@tanstack/react-store";
 import { invoke } from "@tauri-apps/api/tauri";
-import type { File } from "../components/file-list/File.type";
-import FileList from "../components/file-list/FileList";
-import { usePathInput } from "../utils/usePathInput";
+import { useState } from "react";
 import DisplayModeToggle, {
   DisplayMode
 } from "../components/display-mode/DisplayModeToggle";
-import { useState } from "react";
+import type { File } from "../components/file-list/File.type";
+import FileList from "../components/file-list/FileList";
 import TileItem from "../components/file-list/item-views/TileItem";
+import { usePathInput } from "../utils/usePathInput";
+import css from "./index.module.css";
+import Icon from "@mdi/react";
+import { mdiArrowLeft, mdiHome } from "@mdi/js";
 
 export const Route = createLazyFileRoute("/")({
   component: Index
@@ -46,18 +49,28 @@ function Index() {
   };
 
   return (
-    <div>
-      <Title>Iterate over a directory</Title>
-
-      <Flex gap={16} align="flex-end" justify="flex-start">
-        <Button onClick={() => setPath("/")}>Home</Button>
-        <Button onClick={goBack}>Back</Button>
+    <>
+      <nav className={css.actionBar}>
+        <Button
+          leftSection={<Icon path={mdiHome} size={1} />}
+          variant="light"
+          onClick={() => setPath("/")}
+        >
+          Home
+        </Button>
+        <Button
+          variant="transparent"
+          onClick={goBack}
+          leftSection={<Icon path={mdiArrowLeft} size={1} />}
+        >
+          Back
+        </Button>
         <DisplayModeToggle
           value={displayMode}
           setValue={(val) => displayModeStore.setState(() => val)}
         />
         <TextInput
-          label="Folder"
+          placeholder="Folder"
           ref={inputRef}
           defaultValue={path}
           onChange={(event) => setPathDebounced(event.currentTarget.value)}
@@ -67,7 +80,7 @@ function Index() {
               : ""
           }
         />
-      </Flex>
+      </nav>
 
       {dir.isPending && <Text>Loading...</Text>}
       {dir.isError && <Text c="red">Error: {dir.error?.message}</Text>}
@@ -95,6 +108,6 @@ function Index() {
           <TileItem file={openFile} onClick={() => {}} />
         </Modal>
       )}
-    </div>
+    </>
   );
 }

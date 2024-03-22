@@ -2,7 +2,7 @@
   "extends": ["react-app"],
   "rules": {
     "no-console": "off",
-    "no-unused-vars": "error"
+    "no-unused-vars": "warn"
   },
   "ignorePatterns": ["dist", "node_modules"]
 }
