@@ -1,6 +1,5 @@
 import { Button, Flex, Title } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
-import clsx from "clsx";
 import css from "./Layout.module.css";
 
 type Props = {
@@ -10,10 +9,10 @@ type Props = {
 export function Layout({ children }: Props) {
   return (
     <>
-      <nav className={clsx(css.navbar)}>
+      <nav className={css.navbar}>
         <Flex gap="md" h="100%" align="center" p="sm" style={{ zIndex: 1 }}>
           <Flex gap="md" align="center">
-            <Title>Tauri App</Title>
+            <Title>Camille</Title>
             <Button component={Link} to="/">
               Browse
             </Button>

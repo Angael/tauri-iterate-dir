@@ -9,16 +9,11 @@
   height: 60px;
   padding: var(--mantine-spacing-md);
   gap: var(--mantine-spacing-md);
-
-  &.sticky {
-    position: sticky;
-    top: 0;
-  }
 }
 
 .bgImg {
   position: absolute;
-  top: 0;
+  top: -15px;
   left: 0;
   right: 0;
   height: 100%;

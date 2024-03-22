@@ -1,5 +1,12 @@
-import { Button, Modal, Text, TextInput } from "@mantine/core";
-import { mdiArrowLeft, mdiHome } from "@mdi/js";
+import {
+  ActionIcon,
+  Button,
+  Flex,
+  Modal,
+  Text,
+  TextInput
+} from "@mantine/core";
+import { mdiArrowLeft, mdiHome, mdiStar } from "@mdi/js";
 import Icon from "@mdi/react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
@@ -19,7 +26,7 @@ export const Route = createLazyFileRoute("/")({
   component: Index
 });
 
-const pathStore = new Store("/");
+const pathStore = new Store("C:/");
 const displayModeStore = new Store<keyof typeof DisplayMode>(DisplayMode.list);
 
 function Index() {
@@ -58,17 +65,9 @@ function Index() {
         >
           Home
         </Button>
-        <Button
-          variant="transparent"
-          onClick={goBack}
-          leftSection={<Icon path={mdiArrowLeft} size={1} />}
-        >
-          Back
-        </Button>
-        <DisplayModeToggle
-          value={displayMode}
-          setValue={(val) => displayModeStore.setState(() => val)}
-        />
+        <ActionIcon aria-label="Go back" variant="transparent" onClick={goBack}>
+          <Icon path={mdiArrowLeft} size={1} />
+        </ActionIcon>
         <TextInput
           placeholder="Folder"
           ref={inputRef}
@@ -79,7 +78,17 @@ function Index() {
               ? `Can't read directory. ${dir.failureCount}/3 times. ${dir.error || ""}`
               : ""
           }
+          style={{ width: 600, flexShrink: 1 }}
         />
+        <ActionIcon aria-label="Favourite" variant="transparent" disabled>
+          <Icon path={mdiStar} size={1} />
+        </ActionIcon>
+        <Flex ml="auto">
+          <DisplayModeToggle
+            value={displayMode}
+            setValue={(val) => displayModeStore.setState(() => val)}
+          />
+        </Flex>
       </nav>
 
       {dir.isPending && <Text>Loading...</Text>}

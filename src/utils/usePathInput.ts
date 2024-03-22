@@ -18,7 +18,10 @@ export const usePathInput = (store: Store<string>) => {
     setPathDebounced.flush();
   };
 
-  const goBack = () => setPath(path.split("/").slice(0, -1).join("/"));
+  const goBack = () => {
+    const normalizedPath = path.replaceAll("\\", "/");
+    setPath(normalizedPath.split("/").slice(0, -1).join("/"));
+  };
 
   // Fix uncontrolled inputs
   const inputRef = useRef<HTMLInputElement>(null);
