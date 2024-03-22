@@ -62,6 +62,7 @@ function Index() {
           leftSection={<Icon path={mdiHome} size={1} />}
           variant="light"
           onClick={() => setPath("/")}
+          style={{ flexShrink: 0 }}
         >
           Home
         </Button>
@@ -78,7 +79,6 @@ function Index() {
               ? `Can't read directory. ${dir.failureCount}/3 times. ${dir.error || ""}`
               : ""
           }
-          style={{ width: 600, flexShrink: 1 }}
         />
         <ActionIcon aria-label="Favourite" variant="transparent" disabled>
           <Icon path={mdiStar} size={1} />
