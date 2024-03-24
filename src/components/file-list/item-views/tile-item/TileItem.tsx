@@ -5,6 +5,8 @@ import { fileToIcon } from "../../fileToIcon";
 import css from "./TileItem.module.css";
 import parsePath from "../../../../utils/parsePath";
 import DefaultTileItemView from "./DefaultTileItemView";
+import ImgTileItemView from "./ImgTileItemView";
+import VideoTileItemView from "./VideoTileItemView";
 
 type Props = {
   file: FileInList;
@@ -12,30 +14,17 @@ type Props = {
 };
 
 const TileItem = ({ file, onClick }: Props) => {
-  const [ref, entry] = useIntersectionObserver({
-    threshold: 0,
-    root: null,
-    rootMargin: "200px"
-  });
   const isImg = file.path.match(/\.(jpeg|jpg|gif|png|svg|webp)$/i);
   const isVideo = file.path.match(/\.(mp4|webm|ogg)$/i);
-
-  const src = entry?.isIntersecting ? convertFileSrc(file.path) : "";
-
   const Icon = fileToIcon(file);
   const { base } = parsePath(file.path);
 
   return (
-    <div className={css.tileItem} ref={ref} onClick={() => onClick(file)}>
-      {file.isDir ? (
-        <DefaultTileItemView Icon={Icon} label={base} />
-      ) : (
-        <div className={css.previewWrapper}>
-          {!isImg && !isVideo && <Icon />}
-          {isImg && <img src={src} alt="" className={css.img} />}
-          {isVideo && <video src={src} controls className={css.video} />}{" "}
-        </div>
-      )}
+    <div className={css.tileItem} onClick={() => onClick(file)}>
+      {!isImg && !isVideo && <DefaultTileItemView Icon={Icon} label={base} />}
+
+      {isImg && <ImgTileItemView file={file} label={base} />}
+      {isVideo && <VideoTileItemView file={file} label={base} />}
     </div>
   );
 };
