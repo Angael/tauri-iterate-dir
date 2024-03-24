@@ -1,10 +1,10 @@
 import { NavLink } from "@mantine/core";
-import { File } from "../File.type";
+import { FileInList } from "../File.type";
 import { IconFile, IconFolder } from "@tabler/icons-react";
 
 type Props = {
-  file: File;
-  onClick: (file: File) => void;
+  file: FileInList;
+  onClick: (file: FileInList) => void;
 };
 
 const NavLinkItem = ({ file, onClick }: Props) => {

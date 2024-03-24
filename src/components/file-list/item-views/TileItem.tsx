@@ -1,12 +1,12 @@
-import { File } from "../File.type";
+import { FileInList } from "../File.type";
 import { IconFile, IconFolder } from "@tabler/icons-react";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import css from "./TileItem.module.css";
 
 type Props = {
-  file: File;
-  onClick: (file: File) => void;
+  file: FileInList;
+  onClick: (file: FileInList) => void;
 };
 
 const TileItem = ({ file, onClick }: Props) => {

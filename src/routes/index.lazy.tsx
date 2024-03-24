@@ -16,7 +16,7 @@ import { useState } from "react";
 import DisplayModeToggle, {
   DisplayMode
 } from "../components/display-mode/DisplayModeToggle";
-import type { File } from "../components/file-list/File.type";
+import type { FileInList } from "../components/file-list/File.type";
 import FileList from "../components/file-list/FileList";
 import TileItem from "../components/file-list/item-views/TileItem";
 import { usePathInput } from "../utils/usePathInput";
@@ -34,19 +34,19 @@ function Index() {
     usePathInput(pathStore);
 
   const displayMode = useStore(displayModeStore);
-  const [openFile, setOpenFile] = useState<File | null>(null);
+  const [openFile, setOpenFile] = useState<FileInList | null>(null);
 
   const dir = useQuery({
     queryKey: ["list_files", path],
     queryFn: async () => {
-      return await invoke<File[]>("list_files", { dir: path });
+      return await invoke<FileInList[]>("list_files", { dir: path });
     },
     placeholderData: keepPreviousData,
     retry: 2,
     retryDelay: 1000
   });
 
-  const onClickPath = (file: File) => {
+  const onClickPath = (file: FileInList) => {
     if (file.isDir) {
       setPath(file.path);
     } else {

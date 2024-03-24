@@ -1,13 +1,13 @@
 import { Stack } from "@mantine/core";
 import { DisplayMode } from "../display-mode/DisplayModeToggle";
-import type { File } from "./File.type";
+import type { FileInList } from "./File.type";
 import css from "./FileList.module.css";
 import NavLinkItem from "./item-views/NavLinkItem";
 import TileItem from "./item-views/TileItem";
 
 type Props = {
-  paths: File[];
-  onClickPath: (path: File) => void;
+  paths: FileInList[];
+  onClickPath: (path: FileInList) => void;
   displayMode: keyof typeof DisplayMode;
 };
 

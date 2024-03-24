@@ -1,16 +1,16 @@
 use serde::ser::SerializeStruct;
 
-pub struct File {
+pub struct File_in_list {
     pub path: String,
     pub is_file: bool,
     pub is_dir: bool,
 }
 
-impl File {
-     pub fn new(path: String, is_file: bool, is_dir: bool) -> File {
+impl File_in_list {
+     pub fn new(path: String, is_file: bool, is_dir: bool) -> File_in_list {
         let normalized_path = path.replace("\\", "/");
     
-        File {
+        File_in_list {
             path: normalized_path,
             is_file,
             is_dir,
@@ -19,7 +19,7 @@ impl File {
 }
 
 // impl serde
-impl serde::Serialize for File {
+impl serde::Serialize for File_in_list {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: serde::Serializer,
