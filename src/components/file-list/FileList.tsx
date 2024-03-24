@@ -2,7 +2,7 @@ import { Stack } from "@mantine/core";
 import type { FileInList } from "../../types/FileInList.type";
 import css from "./FileList.module.css";
 import NavLinkItem from "./item-views/NavLinkItem";
-import TileItem from "./item-views/TileItem";
+import TileItem from "./item-views/tile-item/TileItem";
 import { DisplayMode } from "../../stores/displayMode.store";
 
 type Props = {

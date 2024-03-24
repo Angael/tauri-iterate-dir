@@ -1,9 +1,10 @@
-import { FileInList } from "../../../types/FileInList.type";
-import { IconFile, IconFolder } from "@tabler/icons-react";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
+import { FileInList } from "../../../../types/FileInList.type";
+import { fileToIcon } from "../../fileToIcon";
 import css from "./TileItem.module.css";
-import { fileToIcon } from "../FileToIcon";
+import parsePath from "../../../../utils/parsePath";
+import DefaultTileItemView from "./DefaultTileItemView";
 
 type Props = {
   file: FileInList;
@@ -22,23 +23,19 @@ const TileItem = ({ file, onClick }: Props) => {
   const src = entry?.isIntersecting ? convertFileSrc(file.path) : "";
 
   const Icon = fileToIcon(file);
+  const { base } = parsePath(file.path);
 
   return (
     <div className={css.tileItem} ref={ref} onClick={() => onClick(file)}>
-      <div className={css.previewWrapper}>
-        {file.isDir ? (
-          <>
-            <Icon />
-            <p>{file.path}</p>
-          </>
-        ) : (
-          <>
-            {!isImg && !isVideo && <Icon />}
-            {isImg && <img src={src} alt="" className={css.img} />}
-            {isVideo && <video src={src} controls className={css.video} />}
-          </>
-        )}
-      </div>
+      {file.isDir ? (
+        <DefaultTileItemView Icon={Icon} label={base} />
+      ) : (
+        <div className={css.previewWrapper}>
+          {!isImg && !isVideo && <Icon />}
+          {isImg && <img src={src} alt="" className={css.img} />}
+          {isVideo && <video src={src} controls className={css.video} />}{" "}
+        </div>
+      )}
     </div>
   );
 };

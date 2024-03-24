@@ -8,6 +8,16 @@
 
   border-radius: 8px;
   overflow: hidden;
+
+  outline: transparent solid 2px;
+  transition:
+    opacity 0.1s,
+    outline 0.1s;
+}
+
+.tileItem:hover {
+  opacity: 0.85;
+  outline: var(--mantine-color-default-border) solid 2px;
 }
 
 .previewWrapper {
