@@ -24,7 +24,7 @@ const ImgTileItemView = (props: Props) => {
   return (
     <div className={previewCss.tileWrapper}>
       <img src={src} alt="" className={css.filePreviewImg} ref={ref} />
-      <Text size="xl" className={previewCss.label}>
+      <Text size="sm" className={previewCss.label} title={label}>
         {label}
       </Text>
     </div>

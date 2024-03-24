@@ -29,7 +29,7 @@ const VideoTileItemView = (props: Props) => {
         ref={ref}
         controls={false}
       />
-      <Text size="xl" className={previewCss.label}>
+      <Text size="sm" className={previewCss.label}>
         {label}
       </Text>
     </div>
