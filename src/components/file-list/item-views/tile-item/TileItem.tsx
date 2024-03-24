@@ -1,11 +1,9 @@
-import { convertFileSrc } from "@tauri-apps/api/tauri";
-import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { FileInList } from "../../../../types/FileInList.type";
-import { fileToIcon } from "../../fileToIcon";
-import css from "./TileItem.module.css";
 import parsePath from "../../../../utils/parsePath";
+import { fileToIcon } from "../../fileToIcon";
 import DefaultTileItemView from "./DefaultTileItemView";
 import ImgTileItemView from "./ImgTileItemView";
+import css from "./TileItem.module.css";
 import VideoTileItemView from "./VideoTileItemView";
 
 type Props = {
