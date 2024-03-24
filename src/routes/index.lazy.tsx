@@ -21,12 +21,12 @@ import FileList from "../components/file-list/FileList";
 import TileItem from "../components/file-list/item-views/TileItem";
 import { usePathInput } from "../utils/usePathInput";
 import css from "./index.module.css";
+import pathStore from "../stores/pathStore";
 
 export const Route = createLazyFileRoute("/")({
   component: Index
 });
 
-const pathStore = new Store("C:/");
 const displayModeStore = new Store<keyof typeof DisplayMode>(DisplayMode.list);
 
 function Index() {
@@ -69,6 +69,11 @@ function Index() {
         <ActionIcon aria-label="Go back" variant="transparent" onClick={goBack}>
           <Icon path={mdiArrowLeft} size={1} />
         </ActionIcon>
+        {/* <Autocomplete
+          label="Your favorite library"
+          placeholder="Pick value or enter anything"
+          data={['React', 'Angular', 'Vue', 'Svelte']}
+        /> */}
         <TextInput
           placeholder="Folder"
           ref={inputRef}
