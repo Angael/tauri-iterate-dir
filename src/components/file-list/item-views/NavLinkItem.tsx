@@ -1,5 +1,5 @@
 import { NavLink } from "@mantine/core";
-import { FileInList } from "../File.type";
+import { FileInList } from "../../../types/FileInList.type";
 import { IconFile, IconFolder } from "@tabler/icons-react";
 
 type Props = {

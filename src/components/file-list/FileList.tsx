@@ -1,6 +1,6 @@
 import { Stack } from "@mantine/core";
 import { DisplayMode } from "../display-mode/DisplayModeToggle";
-import type { FileInList } from "./File.type";
+import type { FileInList } from "../../types/FileInList.type";
 import css from "./FileList.module.css";
 import NavLinkItem from "./item-views/NavLinkItem";
 import TileItem from "./item-views/TileItem";

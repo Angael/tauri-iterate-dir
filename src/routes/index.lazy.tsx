@@ -16,7 +16,7 @@ import { useState } from "react";
 import DisplayModeToggle, {
   DisplayMode
 } from "../components/display-mode/DisplayModeToggle";
-import type { FileInList } from "../components/file-list/File.type";
+import type { FileInList } from "../types/FileInList.type";
 import FileList from "../components/file-list/FileList";
 import TileItem from "../components/file-list/item-views/TileItem";
 import { usePathInput } from "../utils/usePathInput";
