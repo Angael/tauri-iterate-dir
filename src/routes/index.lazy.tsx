@@ -10,24 +10,21 @@ import { mdiArrowLeft, mdiHome, mdiStar } from "@mdi/js";
 import Icon from "@mdi/react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { Store, useStore } from "@tanstack/react-store";
+import { useStore } from "@tanstack/react-store";
 import { invoke } from "@tauri-apps/api/tauri";
 import { useState } from "react";
-import DisplayModeToggle, {
-  DisplayMode
-} from "../components/display-mode/DisplayModeToggle";
-import type { FileInList } from "../types/FileInList.type";
+import DisplayModeToggle from "../components/display-mode/DisplayModeToggle";
 import FileList from "../components/file-list/FileList";
 import TileItem from "../components/file-list/item-views/TileItem";
+import displayModeStore from "../stores/displayMode.store";
+import pathStore from "../stores/pathStore";
+import type { FileInList } from "../types/FileInList.type";
 import { usePathInput } from "../utils/usePathInput";
 import css from "./index.module.css";
-import pathStore from "../stores/pathStore";
 
 export const Route = createLazyFileRoute("/")({
   component: Index
 });
-
-const displayModeStore = new Store<keyof typeof DisplayMode>(DisplayMode.list);
 
 function Index() {
   const { path, setPath, setPathDebounced, goBack, inputRef } =
