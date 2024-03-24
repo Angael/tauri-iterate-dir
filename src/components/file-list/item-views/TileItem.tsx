@@ -3,6 +3,7 @@ import { IconFile, IconFolder } from "@tabler/icons-react";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import css from "./TileItem.module.css";
+import { fileToIcon } from "../FileToIcon";
 
 type Props = {
   file: FileInList;
@@ -20,17 +21,19 @@ const TileItem = ({ file, onClick }: Props) => {
 
   const src = entry?.isIntersecting ? convertFileSrc(file.path) : "";
 
+  const Icon = fileToIcon(file);
+
   return (
     <div className={css.tileItem} ref={ref} onClick={() => onClick(file)}>
       <div className={css.previewWrapper}>
         {file.isDir ? (
           <>
-            <IconFolder />
+            <Icon />
             <p>{file.path}</p>
           </>
         ) : (
           <>
-            {!isImg && !isVideo && <IconFile />}
+            {!isImg && !isVideo && <Icon />}
             {isImg && <img src={src} alt="" className={css.img} />}
             {isVideo && <video src={src} controls className={css.video} />}
           </>
