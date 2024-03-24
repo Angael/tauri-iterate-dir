@@ -1,4 +1,4 @@
-export type File = {
+export type FileInList = {
   path: string;
   isFile: boolean;
   isDir: boolean;

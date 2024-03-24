@@ -1,10 +1,5 @@
 import { SegmentedControl } from "@mantine/core";
-
-export const DisplayMode = {
-  list: "list",
-  grid_sm: "grid_sm",
-  grid_lg: "grid_lg"
-} as const;
+import { DisplayMode } from "../../stores/displayMode.store";
 
 type Props = {
   value: string;

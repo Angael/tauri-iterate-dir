@@ -1,19 +1,22 @@
 import { NavLink } from "@mantine/core";
-import { File } from "../File.type";
-import { IconFile, IconFolder } from "@tabler/icons-react";
+import { FileInList } from "../../../types/FileInList.type";
+import { fileToIcon } from "../fileToIcon";
+import parsePath from "../../../utils/parsePath";
 
 type Props = {
-  file: File;
-  onClick: (file: File) => void;
+  file: FileInList;
+  onClick: (file: FileInList) => void;
 };
 
 const NavLinkItem = ({ file, onClick }: Props) => {
+  const Icon = fileToIcon(file);
+  const { base } = parsePath(file.path);
   return (
     <NavLink
       onClick={() => onClick(file)}
-      label={file.path}
+      label={base}
       c={file.isDir ? "yellow.1" : "gray"}
-      leftSection={file.isDir ? <IconFolder /> : <IconFile />}
+      leftSection={<Icon />}
     />
   );
 };
