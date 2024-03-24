@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { Text } from "@mantine/core";
-import css from "./ImgTileItemView.module.css";
+import css from "./VideoTileItemView.module.css";
+import previewCss from "./PreviewTileItemView.module.css";
 import { FileInList } from "../../../../types/FileInList.type";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
@@ -21,14 +22,14 @@ const VideoTileItemView = (props: Props) => {
   const src = entry?.isIntersecting ? convertFileSrc(file.path) : "";
 
   return (
-    <div className={css.tileWrapper}>
+    <div className={previewCss.tileWrapper}>
       <video
         src={src}
         className={css.filePreviewVideo}
         ref={ref}
         controls={false}
       />
-      <Text size="xl" className={css.label}>
+      <Text size="xl" className={previewCss.label}>
         {label}
       </Text>
     </div>

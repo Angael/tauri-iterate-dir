@@ -8,7 +8,6 @@ export const fileToIcon = (file: FileInList) => {
   }
 
   const type = mime.getType(file.path);
-  console.log(type);
 
   if (type?.includes("text/plain")) {
     return IconTxt;
