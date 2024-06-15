@@ -1,13 +1,13 @@
 import { Stack } from "@mantine/core";
-import { DisplayMode } from "../display-mode/DisplayModeToggle";
-import type { File } from "./File.type";
+import type { FileInList } from "../../types/FileInList.type";
 import css from "./FileList.module.css";
 import NavLinkItem from "./item-views/NavLinkItem";
-import TileItem from "./item-views/TileItem";
+import TileItem from "./item-views/tile-item/TileItem";
+import { DisplayMode } from "../../stores/displayMode.store";
 
 type Props = {
-  paths: File[];
-  onClickPath: (path: File) => void;
+  paths: FileInList[];
+  onClickPath: (path: FileInList) => void;
   displayMode: keyof typeof DisplayMode;
 };
 
@@ -34,7 +34,7 @@ const FileList = ({ paths, onClickPath, displayMode }: Props) => {
         style={{ "--grid-size": gridSizes[displayMode] } as any}
       >
         {sortedPaths.map((file) => (
-          <TileItem file={file} onClick={onClickPath} />
+          <TileItem key={file.path} file={file} onClick={onClickPath} />
         ))}
       </div>
     );
@@ -43,7 +43,7 @@ const FileList = ({ paths, onClickPath, displayMode }: Props) => {
   return (
     <Stack gap={1}>
       {sortedPaths.map((file) => (
-        <NavLinkItem file={file} onClick={onClickPath} />
+        <NavLinkItem key={file.path} file={file} onClick={onClickPath} />
       ))}
     </Stack>
   );

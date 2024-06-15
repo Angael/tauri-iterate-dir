@@ -1,13 +1,12 @@
 use std::fs;
+use std::path::Path;
 
 mod file_struct;
 
-
-
 #[tauri::command]
-pub fn list_files(dir: String) -> Result<Vec<file_struct::File>, String> {
+pub fn list_files(dir: String) -> Result<Vec<file_struct::File_in_list>, String> {
     let mut files = vec![];
-    
+
     let entries = fs::read_dir(dir);
     if entries.is_err() {
         return Err("Error reading directory".to_string());
@@ -19,8 +18,21 @@ pub fn list_files(dir: String) -> Result<Vec<file_struct::File>, String> {
 
         let is_file = path.is_file();
         let is_dir = path.is_dir();
-         
-        files.push(file_struct::File::new(path_str, is_file, is_dir));
+
+        files.push(file_struct::File_in_list::new(path_str, is_file, is_dir));
     }
     Ok(files)
+}
+
+#[tauri::command]
+pub fn delete_file(path: String) -> Result<(), String> {
+    let path = Path::new(&path);
+    if path.is_file() {
+        fs::remove_file(path).map_err(|e| e.to_string())?;
+    } else if path.is_dir() {
+        fs::remove_dir_all(path).map_err(|e| e.to_string())?;
+    } else {
+        return Err("Path is not a file or directory".to_string());
+    }
+    Ok(())
 }
