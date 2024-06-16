@@ -1,5 +1,5 @@
 import { Store, useStore } from "@tanstack/react-store";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 export const usePathInput = (store: Store<string>) => {
@@ -10,13 +10,13 @@ export const usePathInput = (store: Store<string>) => {
       store.setState((_) => _path || "/");
     },
     250,
-    { leading: false }
+    { leading: false },
   );
 
-  const setPath = (path: string) => {
+  const setPath = useCallback((path: string) => {
     setPathDebounced(path);
     setPathDebounced.flush();
-  };
+  }, []);
 
   const goBack = () => {
     const normalizedPath = path.replaceAll("\\", "/");

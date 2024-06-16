@@ -6,6 +6,7 @@ import { useStore } from "@tanstack/react-store";
 import showFavouritesStore from "../../stores/showFavourites.store.ts";
 import FavouritePath from "./FavouritePath.tsx";
 import { sqlite } from "../../utils/sqlite.ts";
+import { memo } from "react";
 
 type Props = {};
 
@@ -41,4 +42,4 @@ const Favourites = (_props: Props) => {
   );
 };
 
-export default Favourites;
+export default memo(Favourites);

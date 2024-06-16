@@ -4,6 +4,7 @@ import css from "./FileList.module.css";
 import NavLinkItem from "./item-views/NavLinkItem";
 import TileItem from "./item-views/tile-item/TileItem";
 import { DisplayMode } from "../../stores/displayMode.store";
+import { memo } from "react";
 
 type Props = {
   paths: FileInList[];
@@ -49,4 +50,4 @@ const FileList = ({ paths, onClickPath, displayMode }: Props) => {
   );
 };
 
-export default FileList;
+export default memo(FileList);

@@ -17,6 +17,7 @@ import { useStore } from "@tanstack/react-store";
 import { sqlite } from "../../utils/sqlite.ts";
 import { useFavourites } from "../favourites/useFavourites.ts";
 import showFavouritesStore from "../../stores/showFavourites.store.ts";
+import { memo } from "react";
 
 type Props = {
   hasPathError: boolean;
@@ -99,4 +100,4 @@ const ActionBar = ({ hasPathError }: Props) => {
   );
 };
 
-export default ActionBar;
+export default memo(ActionBar);

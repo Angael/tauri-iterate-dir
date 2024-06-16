@@ -3,7 +3,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
 import { invoke } from "@tauri-apps/api/tauri";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import FileList from "../components/file-list/FileList";
 import displayModeStore from "../stores/displayMode.store";
 import pathStore from "../stores/path.store";
@@ -39,14 +39,17 @@ function Index() {
     retryDelay: 1000,
   });
 
-  const onClickPath = (file: FileInList) => {
-    if (file.isDir) {
-      setPath(file.path);
-    } else {
-      console.log("Open file", file.path);
-      openFileStore.setState((_) => ({ isOpen: true, file }));
-    }
-  };
+  const onClickPath = useCallback(
+    (file: FileInList) => {
+      if (file.isDir) {
+        setPath(file.path);
+      } else {
+        console.log("Open file", file.path);
+        openFileStore.setState((_) => ({ isOpen: true, file }));
+      }
+    },
+    [setPath],
+  );
 
   return (
     <>

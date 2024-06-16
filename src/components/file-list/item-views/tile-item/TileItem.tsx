@@ -6,6 +6,7 @@ import ImgTileItemView from "./ImgTileItemView";
 import css from "./TileItem.module.css";
 import VideoTileItemView from "./VideoTileItemView";
 import { FileType, getFileType } from "../../../../utils/getFileType.ts";
+import { memo } from "react";
 
 type Props = {
   file: FileInList;
@@ -33,4 +34,4 @@ const TileItem = ({ file, onClick }: Props) => {
   );
 };
 
-export default TileItem;
+export default memo(TileItem);

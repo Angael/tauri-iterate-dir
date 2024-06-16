@@ -2,7 +2,8 @@
   "extends": ["react-app"],
   "rules": {
     "no-console": "off",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "jsx-a11y/alt-text": "off"
   },
   "ignorePatterns": ["dist", "node_modules"]
 }
