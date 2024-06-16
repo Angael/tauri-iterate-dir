@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 // import App from "./App";
 import "./global.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MantineProvider, createTheme } from "@mantine/core";
+import { MantineProvider, createTheme, virtualColor } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { routeTree } from "./routeTree.gen";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
@@ -23,6 +23,13 @@ const queryClient = new QueryClient();
 // Your theme configuration is merged with default theme
 const theme = createTheme({
   primaryColor: "teal",
+  colors: {
+    primary: virtualColor({
+      name: "primary",
+      light: "teal",
+      dark: "teal",
+    }),
+  },
   fontFamily: "Montserrat, sans-serif",
   defaultRadius: "md",
 });
@@ -34,5 +41,5 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <RouterProvider router={router} />
       </MantineProvider>
     </QueryClientProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

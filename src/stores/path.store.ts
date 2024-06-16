@@ -1,12 +1,8 @@
-import { Store } from "@tanstack/react-store";
+import { createStoreWithLocalStorage } from "./storeUtils.ts";
 
-const initialPath =
-  localStorage.getItem("path") || "I:/OneDrive/Pictures/camille-test";
-
-const pathStore = new Store(initialPath);
+const pathStore = createStoreWithLocalStorage(
+  "path",
+  "I:/OneDrive/Pictures/camille-test",
+);
 
 export default pathStore;
-
-pathStore.subscribe(() => {
-  localStorage.setItem("path", pathStore.state);
-});

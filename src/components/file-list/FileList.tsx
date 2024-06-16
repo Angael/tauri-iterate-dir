@@ -13,7 +13,7 @@ type Props = {
 
 const gridSizes = {
   grid_sm: "250px",
-  grid_lg: "400px"
+  grid_lg: "400px",
 };
 
 const FileList = ({ paths, onClickPath, displayMode }: Props) => {
@@ -31,7 +31,7 @@ const FileList = ({ paths, onClickPath, displayMode }: Props) => {
     return (
       <div
         className={css.itemGrid}
-        style={{ "--grid-size": gridSizes[displayMode] } as any}
+        style={{ "--grid-size": gridSizes[displayMode], flex: 1 } as any}
       >
         {sortedPaths.map((file) => (
           <TileItem key={file.path} file={file} onClick={onClickPath} />
@@ -41,7 +41,7 @@ const FileList = ({ paths, onClickPath, displayMode }: Props) => {
   }
 
   return (
-    <Stack gap={1}>
+    <Stack gap={1} flex={1}>
       {sortedPaths.map((file) => (
         <NavLinkItem key={file.path} file={file} onClick={onClickPath} />
       ))}

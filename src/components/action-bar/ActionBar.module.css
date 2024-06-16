@@ -1,11 +1,14 @@
-.actionBar {
+.actionBarBg {
   position: sticky;
   top: 0;
-
-  min-height: 60px;
-  padding: var(--mantine-spacing-md);
-
   background: color-mix(in oklch, var(--mantine-color-body), transparent 70%);
   backdrop-filter: blur(12px) saturate(1.5);
   z-index: 1;
+
+  margin: 0 -16px;
+}
+
+.actionBar {
+  min-height: 60px;
+  padding: var(--mantine-spacing-md);
 }

@@ -10,8 +10,8 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "@mantine/core": "^7.5.2",
-    "@mantine/hooks": "^7.5.2",
+    "@mantine/core": "7.10.2",
+    "@mantine/hooks": "7.10.2",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "@tabler/icons-react": "^2.47.0",

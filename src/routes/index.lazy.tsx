@@ -1,4 +1,4 @@
-import { Text } from "@mantine/core";
+import { Group, Text } from "@mantine/core";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
@@ -12,6 +12,7 @@ import { usePathInput } from "../utils/usePathInput";
 import ActionBar from "../components/action-bar/ActionBar.tsx";
 import FileModal from "../components/file-modal/FileModal.tsx";
 import openFileStore from "../stores/openFile.store.ts";
+import Favourites from "../components/favourites/Favourites.tsx";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -19,6 +20,7 @@ export const Route = createLazyFileRoute("/")({
 
 function Index() {
   const { path, setPath } = usePathInput(pathStore);
+  const displayMode = useStore(displayModeStore);
 
   useEffect(() => {
     (async () => {
@@ -26,8 +28,6 @@ function Index() {
       console.log(result);
     })();
   }, [path]);
-
-  const displayMode = useStore(displayModeStore);
 
   const dir = useQuery({
     queryKey: ["list_files", path],
@@ -54,13 +54,17 @@ function Index() {
 
       {dir.isPending && <Text>Loading...</Text>}
 
-      {dir.data && (
-        <FileList
-          paths={dir.data}
-          onClickPath={onClickPath}
-          displayMode={displayMode}
-        />
-      )}
+      <Group align="flex-start">
+        <Favourites />
+
+        {dir.data && (
+          <FileList
+            paths={dir.data}
+            onClickPath={onClickPath}
+            displayMode={displayMode}
+          />
+        )}
+      </Group>
 
       <FileModal />
     </>
