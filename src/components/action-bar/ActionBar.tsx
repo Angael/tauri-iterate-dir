@@ -1,7 +1,14 @@
 import css from "./ActionBar.module.css";
-import { ActionIcon, Button, Flex, Group, TextInput } from "@mantine/core";
+import {
+  ActionIcon,
+  Burger,
+  Button,
+  Flex,
+  Group,
+  TextInput,
+} from "@mantine/core";
 import Icon from "@mdi/react";
-import { mdiArrowLeft, mdiHome, mdiMenu, mdiStar } from "@mdi/js";
+import { mdiArrowLeft, mdiHome, mdiStar } from "@mdi/js";
 import DisplayModeToggle from "../display-mode/DisplayModeToggle.tsx";
 import displayModeStore from "../../stores/displayMode.store.ts";
 import { usePathInput } from "../../utils/usePathInput.ts";
@@ -19,6 +26,7 @@ const ActionBar = ({ hasPathError }: Props) => {
   const { path, setPath, setPathDebounced, goBack, inputRef } =
     usePathInput(pathStore);
   const displayMode = useStore(displayModeStore);
+  const showFavs = useStore(showFavouritesStore);
 
   const favouritesQuery = useFavourites();
 
@@ -37,13 +45,11 @@ const ActionBar = ({ hasPathError }: Props) => {
   return (
     <nav className={css.actionBarBg}>
       <Group className={css.actionBar} gap="sm" h="80px">
-        <ActionIcon
-          aria-label="Menu"
-          variant="transparent"
+        <Burger
+          opened={showFavs}
           onClick={() => showFavouritesStore.setState((prev) => !prev)}
-        >
-          <Icon path={mdiMenu} size={1} />
-        </ActionIcon>
+          aria-label="Toggle menu"
+        />
 
         <Button
           leftSection={<Icon path={mdiHome} size={1} />}
