@@ -5,6 +5,7 @@ import DefaultTileItemView from "./DefaultTileItemView";
 import ImgTileItemView from "./ImgTileItemView";
 import css from "./TileItem.module.css";
 import VideoTileItemView from "./VideoTileItemView";
+import { FileType, getFileType } from "../../../../utils/getFileType.ts";
 
 type Props = {
   file: FileInList;
@@ -12,17 +13,22 @@ type Props = {
 };
 
 const TileItem = ({ file, onClick }: Props) => {
-  const isImg = file.path.match(/\.(jpeg|jpg|gif|png|svg|webp)$/i);
-  const isVideo = file.path.match(/\.(mp4|webm|ogg)$/i);
+  const fileType = getFileType(file.path);
   const Icon = fileToIcon(file);
   const { base } = parsePath(file.path);
 
   return (
     <div className={css.tileItem} onClick={() => onClick(file)}>
-      {!isImg && !isVideo && <DefaultTileItemView Icon={Icon} label={base} />}
+      {fileType === undefined && (
+        <DefaultTileItemView Icon={Icon} label={base} />
+      )}
 
-      {isImg && <ImgTileItemView file={file} label={base} />}
-      {isVideo && <VideoTileItemView file={file} label={base} />}
+      {fileType === FileType.Image && (
+        <ImgTileItemView file={file} label={base} />
+      )}
+      {fileType === FileType.Video && (
+        <VideoTileItemView file={file} label={base} />
+      )}
     </div>
   );
 };

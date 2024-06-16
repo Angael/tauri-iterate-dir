@@ -5,6 +5,8 @@ import previewCss from "./PreviewTileItemView.module.css";
 import { FileInList } from "../../../../types/FileInList.type";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
+import Icon from "@mdi/react";
+import { mdiPlay } from "@mdi/js";
 
 type Props = {
   file: FileInList;
@@ -16,7 +18,7 @@ const VideoTileItemView = (props: Props) => {
   const [ref, entry] = useIntersectionObserver({
     threshold: 0,
     root: null,
-    rootMargin: "200px"
+    rootMargin: "200px",
   });
 
   const src = entry?.isIntersecting ? convertFileSrc(file.path) : "";
@@ -32,6 +34,7 @@ const VideoTileItemView = (props: Props) => {
       <Text size="sm" className={previewCss.label}>
         {label}
       </Text>
+      <Icon path={mdiPlay} size={"64px"} className={css.playIcon} />
     </div>
   );
 };

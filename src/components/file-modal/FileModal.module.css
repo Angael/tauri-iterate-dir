@@ -1,0 +1,23 @@
+.ImgInModal {
+  max-height: var(
+    --modal-content-max-height,
+    calc(100dvh - var(--modal-y-offset) * 2)
+  );
+  display: block;
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin: auto;
+}
+.VideoInModal {
+  max-height: var(
+    --modal-content-max-height,
+    calc(100dvh - var(--modal-y-offset) * 2)
+  );
+  display: block;
+  max-width: 100%;
+
+  /*height: 100%;*/
+  object-fit: contain;
+  margin: auto;
+}
