@@ -17,6 +17,7 @@ const NavLinkItem = ({ file, onClick }: Props) => {
       label={base}
       c={file.isDir ? "yellow.1" : "gray"}
       leftSection={<Icon />}
+      p={"xs"}
     />
   );
 };

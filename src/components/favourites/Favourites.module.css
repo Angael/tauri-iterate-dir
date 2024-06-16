@@ -16,3 +16,7 @@
     transform: translateX(0);
   }
 }
+
+.FavouritePath:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
