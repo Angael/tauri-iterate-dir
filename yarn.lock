@@ -1584,6 +1584,11 @@
   resolved "https://registry.yarnpkg.com/@tanstack/store/-/store-0.3.1.tgz#317bfb7eedd8cc4ee32c4e52740abbf1bd311d36"
   integrity sha512-A49KN8SpLMWaNmZGPa9K982RQ81W+m7W6iStcQVeKeVS70JZRqkF0fDwKByREPq6qz9/kS0aQFOPQ0W6wIeU5g==
 
+"@tauri-apps/api@1.5.6":
+  version "1.5.6"
+  resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.5.6.tgz#7496d79f6586659a59bc6e9d6666eed8d24dc6da"
+  integrity sha512-LH5ToovAHnDVe5Qa9f/+jW28I6DeMhos8bNDtBOmmnaDpPmJmYLyHdeDblAWWWYc7KKRDg9/66vMuKyq0WIeFA==
+
 "@tauri-apps/api@^1.5.2":
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.5.3.tgz#f7b362b1f30aadb0a8bbeb7ae111755c0ed33d73"
@@ -3986,6 +3991,12 @@ tabbable@^6.0.1:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-6.2.0.tgz#732fb62bc0175cfcec257330be187dcfba1f3b97"
   integrity sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==
+
+"tauri-plugin-sql-api@https://github.com/tauri-apps/tauri-plugin-sql#v1":
+  version "0.0.0"
+  resolved "https://github.com/tauri-apps/tauri-plugin-sql#6a4a14c36b1ad49c9f468351706d104a54e0540c"
+  dependencies:
+    "@tauri-apps/api" "1.5.6"
 
 text-table@^0.2.0:
   version "0.2.0"

@@ -6,16 +6,16 @@ type Props = {
   setValue: (value: keyof typeof DisplayMode) => void;
 }; // & ComponentProps<typeof SegmentedControl>;
 
-const DisplayModeToggle = (props: Props) => {
+const DisplayModeToggle = ({ value, setValue, ...props }: Props) => {
   return (
     <SegmentedControl
       {...props}
-      value={props.value}
-      onChange={(value) => props.setValue(value as any)}
+      value={value}
+      onChange={(value) => setValue(value as any)}
       data={[
         { label: "List", value: DisplayMode.list },
         { label: "Small Grid", value: DisplayMode.grid_sm },
-        { label: "Large Grid", value: DisplayMode.grid_lg }
+        { label: "Large Grid", value: DisplayMode.grid_lg },
       ]}
     />
   );

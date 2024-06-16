@@ -1,7 +1,7 @@
 {
   "name": "camille",
   "private": true,
-  "version": "0.0.7",
+  "version": "0.0.8",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -24,6 +24,7 @@
     "mime": "^4.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "tauri-plugin-sql-api": "https://github.com/tauri-apps/tauri-plugin-sql#v1",
     "use-debounce": "^10.0.0"
   },
   "devDependencies": {
