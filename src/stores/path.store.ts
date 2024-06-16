@@ -8,6 +8,5 @@ const pathStore = new Store(initialPath);
 export default pathStore;
 
 pathStore.subscribe(() => {
-  console.log("Path changed", pathStore.state);
   localStorage.setItem("path", pathStore.state);
 });
