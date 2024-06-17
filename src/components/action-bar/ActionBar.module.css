@@ -1,7 +1,7 @@
 .actionBarBg {
   position: sticky;
   top: 0;
-  background: color-mix(in oklch, var(--mantine-color-body), transparent 70%);
+  background: color-mix(in oklch, var(--mantine-color-body), transparent 30%);
   backdrop-filter: blur(12px) saturate(1.5);
   z-index: 1;
 
