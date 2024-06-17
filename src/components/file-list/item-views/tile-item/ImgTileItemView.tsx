@@ -17,7 +17,7 @@ const ImgTileItemView = (props: Props) => {
 
   return (
     <div className={previewCss.tileWrapper}>
-      <img src={src} alt="" className={css.filePreviewImg} />
+      <img src={src} loading="lazy" alt="" className={css.filePreviewImg} />
       <Text size="sm" className={previewCss.label} title={label}>
         {label}
       </Text>

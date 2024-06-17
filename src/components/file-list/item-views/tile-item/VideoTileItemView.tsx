@@ -19,7 +19,12 @@ const VideoTileItemView = (props: Props) => {
 
   return (
     <div className={previewCss.tileWrapper}>
-      <video src={src} className={css.filePreviewVideo} controls={false} />
+      <video
+        src={src}
+        className={css.filePreviewVideo}
+        controls={false}
+        preload="metadata"
+      />
       <Text size="sm" className={previewCss.label}>
         {label}
       </Text>

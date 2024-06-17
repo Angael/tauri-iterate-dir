@@ -6,7 +6,7 @@ export const FileType = {
 export const getFileType = (
   filename: string,
 ): keyof typeof FileType | undefined => {
-  const isImg = filename.match(/\.(jpeg|jpg|gif|png|svg|webp)$/i);
+  const isImg = filename.match(/\.(jpeg|jpg|gif|png|svg|webp|avif)$/i);
   const isVideo = filename.match(/\.(mp4|webm|ogg)$/i);
 
   if (isImg) return FileType.Image;
