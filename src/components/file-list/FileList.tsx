@@ -9,6 +9,7 @@ import { memo } from "react";
 type Props = {
   paths: FileInList[];
   onClickPath: (path: FileInList) => void;
+  onDelete: (file: FileInList) => void;
   displayMode: keyof typeof DisplayMode;
 };
 
@@ -17,25 +18,20 @@ const gridSizes = {
   grid_lg: "400px",
 };
 
-const FileList = ({ paths, onClickPath, displayMode }: Props) => {
-  const sortedPaths = paths.toSorted((a, b) => {
-    if (a.isDir && !b.isDir) {
-      return -1;
-    }
-    if (!a.isDir && b.isDir) {
-      return 1;
-    }
-    return a.path.localeCompare(b.path);
-  });
-
+const FileList = ({ paths, onClickPath, onDelete, displayMode }: Props) => {
   if (displayMode === "grid_sm" || displayMode === "grid_lg") {
     return (
       <div
         className={css.itemGrid}
         style={{ "--grid-size": gridSizes[displayMode], flex: 1 } as any}
       >
-        {sortedPaths.map((file) => (
-          <TileItem key={file.path} file={file} onClick={onClickPath} />
+        {paths.map((file) => (
+          <TileItem
+            key={file.path}
+            file={file}
+            onClick={onClickPath}
+            onDelete={onDelete}
+          />
         ))}
       </div>
     );
@@ -43,7 +39,7 @@ const FileList = ({ paths, onClickPath, displayMode }: Props) => {
 
   return (
     <Stack gap={1} flex={1}>
-      {sortedPaths.map((file) => (
+      {paths.map((file) => (
         <NavLinkItem key={file.path} file={file} onClick={onClickPath} />
       ))}
     </Stack>

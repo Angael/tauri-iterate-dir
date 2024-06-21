@@ -4,6 +4,7 @@ import { useStore } from "@tanstack/react-store";
 import { FileType, getFileType } from "../../utils/getFileType.ts";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import css from "./FileModal.module.css";
+import { memo } from "react";
 
 const FileModal = () => {
   const openFile = useStore(openFileStore);
@@ -22,7 +23,7 @@ const FileModal = () => {
       centered
       overlayProps={{
         backgroundOpacity: 0.55,
-        blur: 3,
+        blur: 8,
       }}
       withCloseButton={false}
       size={"xl"}
@@ -37,4 +38,4 @@ const FileModal = () => {
   );
 };
 
-export default FileModal;
+export default memo(FileModal);
