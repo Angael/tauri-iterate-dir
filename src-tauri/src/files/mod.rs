@@ -22,6 +22,16 @@ pub fn list_files(dir: String) -> Result<Vec<file_struct::FileInList>, String> {
 
         files.push(file_struct::FileInList::new(path_str, is_file, is_dir));
     }
+
+    files.sort_by(|a, b| {
+        if a.is_dir && !b.is_dir {
+            return std::cmp::Ordering::Less;
+        } else if !a.is_dir && b.is_dir {
+            return std::cmp::Ordering::Greater;
+        }
+        a.path.cmp(&b.path)
+    });
+
     Ok(files)
 }
 
