@@ -49,7 +49,6 @@ function Index() {
       if (file.isDir) {
         setPath(file.path);
       } else {
-        console.log("Open file", file.path);
         openFileStore.setState((_) => ({ isOpen: true, file }));
       }
     },
@@ -65,8 +64,32 @@ function Index() {
       // TODO: remove from cache, because the file is deleted
       dir.refetch();
     },
-    [dir],
+    [queryClient, path, dir],
   );
+
+  const onNext = useCallback(() => {
+    if (!dir.data) return;
+    const nextIndex = dir.data.findIndex(
+      (file) => file.path === openFileStore.state.file?.path,
+    );
+    if (nextIndex === -1) return;
+    const nextFile = dir.data[nextIndex + 1];
+    if (nextFile) {
+      openFileStore.setState((_) => ({ isOpen: true, file: nextFile }));
+    }
+  }, [dir.data]);
+
+  const onPrevious = useCallback(() => {
+    if (!dir.data) return;
+    const prevIndex = dir.data.findIndex(
+      (file) => file.path === openFileStore.state.file?.path,
+    );
+    if (prevIndex === -1) return;
+    const prevFile = dir.data[prevIndex - 1];
+    if (prevFile) {
+      openFileStore.setState((_) => ({ isOpen: true, file: prevFile }));
+    }
+  }, [dir.data]);
 
   return (
     <>
@@ -87,7 +110,7 @@ function Index() {
         )}
       </Group>
 
-      <FileModal />
+      <FileModal onPrev={onPrevious} onNext={onNext} onDelete={onDelete} />
     </>
   );
 }

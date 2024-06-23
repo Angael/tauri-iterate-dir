@@ -5,8 +5,16 @@ import { FileType, getFileType } from "../../utils/getFileType.ts";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import css from "./FileModal.module.css";
 import { memo } from "react";
+import { useHotkeys } from "@mantine/hooks";
+import { FileInList } from "../../types/FileInList.type.ts";
 
-const FileModal = () => {
+interface Props {
+  onNext: () => void;
+  onPrev: () => void;
+  onDelete: (file: FileInList) => void;
+}
+
+const FileModal = ({ onNext, onPrev, onDelete }: Props) => {
   const openFile = useStore(openFileStore);
   const onClose = () =>
     openFileStore.setState((s) => ({ ...s, isOpen: false }));
@@ -14,6 +22,19 @@ const FileModal = () => {
   const fileType = getFileType(openFile.file?.path ?? "");
 
   const src = openFile.file ? convertFileSrc(openFile.file?.path) : "";
+
+  useHotkeys([
+    ["ArrowLeft", () => onPrev()],
+    ["ArrowRight", () => onNext()],
+    [
+      "Delete",
+      () => {
+        if (!openFile.file) return;
+        onNext();
+        onDelete(openFile.file);
+      },
+    ],
+  ]);
 
   return (
     <Modal
