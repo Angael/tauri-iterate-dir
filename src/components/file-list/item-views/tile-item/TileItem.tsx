@@ -6,18 +6,18 @@ import ImgTileItemView from "./ImgTileItemView";
 import css from "./TileItem.module.css";
 import VideoTileItemView from "./VideoTileItemView";
 import { FileType, getFileType } from "../../../../utils/getFileType.ts";
-import { memo, useState } from "react";
+import { HTMLAttributes, memo, useState } from "react";
 import { mdiDelete } from "@mdi/js";
 import { ActionIcon, Stack } from "@mantine/core";
 import Icon from "@mdi/react";
 
-type Props = {
+type Props = HTMLAttributes<HTMLDivElement> & {
   file: FileInList;
-  onClick: (file: FileInList) => void;
+  onClickFile: (file: FileInList) => void;
   onDelete: (file: FileInList) => void;
 };
 
-const TileItem = ({ file, onClick, onDelete }: Props) => {
+const TileItem = ({ file, onClickFile, onDelete, ...other }: Props) => {
   const [isDeleted, setIsDeleted] = useState(false);
   const fileType = getFileType(file.path);
   const { base } = parsePath(file.path);
@@ -34,7 +34,7 @@ const TileItem = ({ file, onClick, onDelete }: Props) => {
   }
 
   return (
-    <div className={css.tileItem} onClick={() => onClick(file)}>
+    <div className={css.tileItem} onClick={() => onClickFile(file)} {...other}>
       {fileType === undefined && (
         <DefaultTileItemView Icon={fileToIcon(file)} label={base} />
       )}

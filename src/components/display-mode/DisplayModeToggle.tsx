@@ -16,6 +16,7 @@ const DisplayModeToggle = ({ value, setValue, ...props }: Props) => {
         { label: "List", value: DisplayMode.list },
         { label: "Small Grid", value: DisplayMode.grid_sm },
         { label: "Large Grid", value: DisplayMode.grid_lg },
+        { label: "Virtualized Grid", value: DisplayMode.virtualized_grid },
       ]}
     />
   );
