@@ -34,19 +34,18 @@ const FileList = (props: FileListProps) => {
       {displayMode === "virtualized_grid" && (
         <MyVirtualizedFileGrid {...props} width={width} />
       )}
-      {displayMode === "grid_sm" ||
-        (displayMode === "grid_lg" && (
-          <div className={css.itemGrid}>
-            {paths.map((file) => (
-              <TileItem
-                key={file.path}
-                file={file}
-                onClickFile={onClickPath}
-                onDelete={onDelete}
-              />
-            ))}
-          </div>
-        ))}
+      {(displayMode === "grid_sm" || displayMode === "grid_lg") && (
+        <div className={css.itemGrid}>
+          {paths.map((file) => (
+            <TileItem
+              key={file.path}
+              file={file}
+              onClickFile={onClickPath}
+              onDelete={onDelete}
+            />
+          ))}
+        </div>
+      )}
       {displayMode === "list" && (
         <Stack gap={1}>
           {paths.map((file) => (
