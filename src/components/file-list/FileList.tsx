@@ -9,7 +9,7 @@ import MyVirtualizedFileGrid from "./virtualized/MyVirtualizedFileGrid.tsx";
 import { useElementSize } from "@mantine/hooks";
 
 export type FileListProps = {
-  paths: FileInList[];
+  paths: FileInList[]; // bad name
   onClickPath: (path: FileInList) => void;
   onDelete: (file: FileInList) => void;
   displayMode: keyof typeof DisplayMode;
@@ -29,7 +29,13 @@ const FileList = (props: FileListProps) => {
   return (
     <div
       ref={ref}
-      style={{ "--grid-size": gridSizes[displayMode], flex: 1 } as any}
+      style={
+        {
+          "--grid-size": gridSizes[displayMode],
+          flex: 1,
+          overflow: "hidden",
+        } as any
+      }
     >
       {displayMode === "virtualized_grid" && (
         <MyVirtualizedFileGrid {...props} width={width} />

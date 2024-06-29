@@ -1,19 +1,86 @@
- import {FileListProps} from "../FileList.tsx";
+import { FileListProps } from "../FileList.tsx";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { Fragment, useRef } from "react";
+import TileItem from "../item-views/tile-item/TileItem.tsx";
 
 const columnWidth = 450;
-const defaultHeight = 450;
+const rowHeight = 450;
 const gutter = 8;
-const defaultWidth = columnWidth;
-
 
 type Props = { width: number } & FileListProps;
 const MyVirtualizedFileGrid = ({
-  width: _,
   paths,
+  width,
   onClickPath,
   onDelete,
 }: Props) => {
+  const parentRef = useRef(null);
+
+  const columnCount = Math.floor(width / (columnWidth + gutter));
+  const rowVirtualizer = useVirtualizer({
+    count: Math.ceil(paths.length / columnCount),
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => rowHeight,
+    overscan: 5,
+  });
+
+  const columnVirtualizer = useVirtualizer({
+    horizontal: true,
+    count: columnCount,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => columnWidth,
+    overscan: 5,
+  });
+
   return (
+    <>
+      <div
+        ref={parentRef}
+        style={{
+          height: `800px`,
+          width: width,
+          overflow: "auto",
+        }}
+      >
+        <div
+          style={{
+            height: `${rowVirtualizer.getTotalSize()}px`,
+            width: `${columnVirtualizer.getTotalSize()}px`,
+            position: "relative",
+          }}
+        >
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => (
+            <Fragment key={virtualRow.key}>
+              {columnVirtualizer.getVirtualItems().map((virtualColumn) => {
+                const file =
+                  paths[virtualRow.index * columnCount + virtualColumn.index];
+
+                if (!file) {
+                  return <Fragment key={virtualColumn.key} />;
+                }
+
+                return (
+                  <TileItem
+                    key={file.path}
+                    file={file}
+                    onClickFile={onClickPath}
+                    onDelete={onDelete}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: `${virtualColumn.size}px`,
+                      height: `${virtualRow.size}px`,
+                      transform: `translateX(${virtualColumn.start}px) translateY(${virtualRow.start}px)`,
+                    }}
+                  />
+                );
+              })}
+            </Fragment>
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 
