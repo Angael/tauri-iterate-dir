@@ -34,7 +34,11 @@ const TileItem = ({ file, onClickFile, onDelete, ...other }: Props) => {
   }
 
   return (
-    <div className={css.tileItem} onClick={() => onClickFile(file)} {...other}>
+    <div
+      className={css.tileItem}
+      onMouseDown={() => onClickFile(file)}
+      {...other}
+    >
       {fileType === undefined && (
         <DefaultTileItemView Icon={fileToIcon(file)} label={base} />
       )}
@@ -49,7 +53,7 @@ const TileItem = ({ file, onClickFile, onDelete, ...other }: Props) => {
       <Stack className={css.tileMenu}>
         <ActionIcon
           color="red"
-          onClick={async (e) => {
+          onMouseDown={async (e) => {
             e.stopPropagation();
             await handleDeleteWithToast(file);
           }}

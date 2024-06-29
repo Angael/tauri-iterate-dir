@@ -1,11 +1,11 @@
 import { FileListProps } from "../FileList.tsx";
-import { useVirtualizer } from "@tanstack/react-virtual";
+import { useVirtualizer, useWindowVirtualizer } from "@tanstack/react-virtual";
 import { Fragment, useRef } from "react";
 import TileItem from "../item-views/tile-item/TileItem.tsx";
 
 const columnWidth = 450;
 const rowHeight = 450;
-const gutter = 8;
+const gutter = 16;
 
 type Props = { width: number } & FileListProps;
 const MyVirtualizedFileGrid = ({
@@ -14,34 +14,27 @@ const MyVirtualizedFileGrid = ({
   onClickPath,
   onDelete,
 }: Props) => {
-  const parentRef = useRef(null);
+  const parentRef = useRef<HTMLDivElement>(null);
 
   const columnCount = Math.floor(width / (columnWidth + gutter));
-  const rowVirtualizer = useVirtualizer({
+  const rowVirtualizer = useWindowVirtualizer({
     count: Math.ceil(paths.length / columnCount),
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => rowHeight,
+    estimateSize: () => rowHeight + gutter,
     overscan: 5,
+    scrollMargin: parentRef.current?.offsetTop ?? 0,
   });
 
   const columnVirtualizer = useVirtualizer({
     horizontal: true,
     count: columnCount,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => columnWidth,
+    estimateSize: () => columnWidth + gutter,
     overscan: 5,
   });
 
   return (
     <>
-      <div
-        ref={parentRef}
-        style={{
-          height: `800px`,
-          width: width,
-          overflow: "auto",
-        }}
-      >
+      <div ref={parentRef} style={{ width: width, overflow: "auto" }}>
         <div
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
