@@ -64,7 +64,7 @@ function Index() {
       // TODO: remove from cache, because the file is deleted
       dir.refetch();
     },
-    [queryClient, path, dir],
+    [queryClient, path],
   );
 
   const onNext = useCallback(() => {

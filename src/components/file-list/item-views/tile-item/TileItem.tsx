@@ -10,6 +10,7 @@ import { HTMLAttributes, memo, useState } from "react";
 import { mdiDelete } from "@mdi/js";
 import { ActionIcon, Stack } from "@mantine/core";
 import Icon from "@mdi/react";
+import clsx from "clsx";
 
 type Props = HTMLAttributes<HTMLDivElement> & {
   file: FileInList;
@@ -35,7 +36,7 @@ const TileItem = ({ file, onClickFile, onDelete, ...other }: Props) => {
 
   return (
     <div
-      className={css.tileItem}
+      className={clsx(css.tileItem, isDeleted && css.hidden)}
       onMouseDown={() => onClickFile(file)}
       {...other}
     >
