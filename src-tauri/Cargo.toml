@@ -1,6 +1,6 @@
 [package]
 name = "Camille"
-version = "0.0.12"
+version = "0.0.13"
 description = "A Tauri App"
 authors = ["Krzysztof Widacki"]
 edition = "2021"
