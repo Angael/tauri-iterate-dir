@@ -7,6 +7,7 @@ import { DisplayMode } from "../../stores/displayMode.store";
 import { memo } from "react";
 import MyVirtualizedFileGrid from "./virtualized/MyVirtualizedFileGrid.tsx";
 import { useElementSize } from "@mantine/hooks";
+import { useSeen } from "./useSeen.ts";
 
 export type FileListProps = {
   paths: FileInList[]; // bad name
@@ -26,6 +27,8 @@ const FileList = (props: FileListProps) => {
   const { paths, onClickPath, onDelete, displayMode } = props;
   const { ref, width } = useElementSize();
 
+  const seen = useSeen();
+
   return (
     <div
       ref={ref}
@@ -38,7 +41,7 @@ const FileList = (props: FileListProps) => {
       }
     >
       {displayMode === "virtualized_grid" && (
-        <MyVirtualizedFileGrid {...props} width={width} />
+        <MyVirtualizedFileGrid {...props} width={width} seenList={seen.data} />
       )}
       {(displayMode === "grid_sm" || displayMode === "grid_lg") && (
         <div className={css.itemGrid}>
@@ -48,6 +51,7 @@ const FileList = (props: FileListProps) => {
               file={file}
               onClickFile={onClickPath}
               onDelete={onDelete}
+              seen={seen.data.includes(file.path)}
             />
           ))}
         </div>

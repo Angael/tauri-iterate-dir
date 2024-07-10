@@ -37,6 +37,12 @@ fn main() {
             sql: "CREATE TABLE test (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT);",
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 2,
+            description: "seen_table",
+            sql: "CREATE TABLE seen (path TEXT PRIMARY KEY);",
+            kind: MigrationKind::Up,
+        },
     ];
 
     tauri::Builder::default()

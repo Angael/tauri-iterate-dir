@@ -2,6 +2,7 @@ import { NavLink } from "@mantine/core";
 import { FileInList } from "../../../types/FileInList.type";
 import { fileToIcon } from "../fileToIcon";
 import parsePath from "../../../utils/parsePath";
+import { memo } from "react";
 
 type Props = {
   file: FileInList;
@@ -22,4 +23,4 @@ const NavLinkItem = ({ file, onClick }: Props) => {
   );
 };
 
-export default NavLinkItem;
+export default memo(NavLinkItem);

@@ -11,14 +11,16 @@ import { mdiDelete } from "@mdi/js";
 import { ActionIcon, Stack } from "@mantine/core";
 import Icon from "@mdi/react";
 import clsx from "clsx";
+import { useAddSeen } from "../../useSeen.ts";
 
 type Props = HTMLAttributes<HTMLDivElement> & {
   file: FileInList;
   onClickFile: (file: FileInList) => void;
   onDelete: (file: FileInList) => void;
+  seen: boolean;
 };
 
-const TileItem = ({ file, onClickFile, onDelete, ...other }: Props) => {
+const TileItem = ({ file, onClickFile, onDelete, seen, ...other }: Props) => {
   const [isDeleted, setIsDeleted] = useState(false);
   const fileType = getFileType(file.path);
   const { base } = parsePath(file.path);
@@ -30,14 +32,17 @@ const TileItem = ({ file, onClickFile, onDelete, ...other }: Props) => {
     onDelete(file);
   };
 
+  const addSeen = useAddSeen();
+
   if (isDeleted) {
     return null;
   }
 
   return (
     <div
-      className={clsx(css.tileItem, isDeleted && css.hidden)}
+      className={clsx(css.tileItem, isDeleted && css.hidden, seen && css.seen)}
       onMouseDown={() => onClickFile(file)}
+      onMouseEnter={() => addSeen(file.path)}
       {...other}
     >
       {fileType === undefined && (
@@ -53,6 +58,7 @@ const TileItem = ({ file, onClickFile, onDelete, ...other }: Props) => {
 
       <Stack className={css.tileMenu}>
         <ActionIcon
+          size="xl"
           color="red"
           onMouseDown={async (e) => {
             e.stopPropagation();

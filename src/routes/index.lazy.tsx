@@ -17,6 +17,7 @@ import ActionBar from "../components/action-bar/ActionBar.tsx";
 import FileModal from "../components/file-modal/FileModal.tsx";
 import openFileStore from "../stores/openFile.store.ts";
 import Favourites from "../components/favourites/Favourites.tsx";
+import { sqlite } from "../utils/sqlite.ts";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -37,7 +38,16 @@ function Index() {
   const dir = useQuery({
     queryKey: ["list_files", path],
     queryFn: async () => {
-      return await invoke<FileInList[]>("list_files", { dir: path });
+      const rows =
+        await sqlite.select<{ path: string }[]>("SELECT * FROM seen");
+
+      const seenPaths = rows.map((row) => row.path);
+
+      const fileList = await invoke<FileInList[]>("list_files", { dir: path });
+
+      return fileList.filter(
+        (file) => file.isDir || !seenPaths.includes(file.path),
+      );
     },
     placeholderData: keepPreviousData,
     retry: false,
@@ -57,12 +67,11 @@ function Index() {
 
   const onDelete = useCallback(
     async (file: FileInList) => {
-      queryClient.setQueryData(["list_files", path], (data: FileInList[]) => {
-        return data?.filter((f) => f.path !== file.path);
-      });
+      await sqlite.execute(`DELETE FROM seen WHERE path = ?`, [file.path]);
+
       await invoke("delete_file", { path: file.path });
       // TODO: remove from cache, because the file is deleted
-      dir.refetch();
+      // dir.refetch();
     },
     [queryClient, path],
   );

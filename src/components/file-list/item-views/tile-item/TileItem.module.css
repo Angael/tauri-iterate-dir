@@ -50,3 +50,7 @@
 .hidden {
   opacity: 0.3;
 }
+
+.seen {
+  outline: var(--mantine-color-red-4) solid 2px !important;
+}

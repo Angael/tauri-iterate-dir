@@ -1,16 +1,17 @@
 import { FileListProps } from "../FileList.tsx";
 import { useVirtualizer, useWindowVirtualizer } from "@tanstack/react-virtual";
-import { Fragment, useRef } from "react";
+import { Fragment, memo, useRef } from "react";
 import TileItem from "../item-views/tile-item/TileItem.tsx";
 
 const columnWidth = 450;
 const rowHeight = 450;
 const gutter = 16;
 
-type Props = { width: number } & FileListProps;
+type Props = { width: number; seenList: string[] } & FileListProps;
 const MyVirtualizedFileGrid = ({
   paths,
   width,
+  seenList,
   onClickPath,
   onDelete,
 }: Props) => {
@@ -66,6 +67,7 @@ const MyVirtualizedFileGrid = ({
                       height: `${virtualRow.size}px`,
                       transform: `translateX(${virtualColumn.start}px) translateY(${virtualRow.start}px)`,
                     }}
+                    seen={seenList.includes(file.path)}
                   />
                 );
               })}
@@ -77,4 +79,4 @@ const MyVirtualizedFileGrid = ({
   );
 };
 
-export default MyVirtualizedFileGrid;
+export default memo(MyVirtualizedFileGrid);
