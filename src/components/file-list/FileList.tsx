@@ -36,7 +36,7 @@ const FileList = (props: FileListProps) => {
         {
           "--grid-size": gridSizes[displayMode],
           flex: 1,
-          overflow: "hidden",
+          overflow: "clip",
         } as any
       }
     >

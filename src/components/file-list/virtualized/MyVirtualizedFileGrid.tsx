@@ -35,7 +35,7 @@ const MyVirtualizedFileGrid = ({
 
   return (
     <>
-      <div ref={parentRef} style={{ width: width, overflow: "auto" }}>
+      <div ref={parentRef} style={{ width: width, overflow: "clip" }}>
         <div
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
@@ -61,11 +61,10 @@ const MyVirtualizedFileGrid = ({
                     onDelete={onDelete}
                     style={{
                       position: "absolute",
-                      top: 0,
-                      left: 0,
+                      top: virtualRow.start,
+                      left: virtualColumn.start,
                       width: `${virtualColumn.size}px`,
                       height: `${virtualRow.size}px`,
-                      transform: `translateX(${virtualColumn.start}px) translateY(${virtualRow.start}px)`,
                     }}
                     seen={seenList.includes(file.path)}
                   />

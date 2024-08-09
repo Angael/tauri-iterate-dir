@@ -5,12 +5,16 @@
   -webkit-text-size-adjust: 100%;
 }
 
+html {
+  scroll-timeline-name: --scrollTimeline;
+}
+
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
   overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 img {

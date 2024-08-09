@@ -11,7 +11,7 @@
   align-items: center;
 
   border-radius: 8px;
-  overflow: hidden;
+  overflow: clip;
 
   outline: transparent solid 2px;
   transition:
