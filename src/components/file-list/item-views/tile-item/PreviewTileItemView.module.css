@@ -32,8 +32,7 @@
 }
 
 .animation {
-  view-timeline: --subjectReveal block;
-  animation-timeline: --subjectReveal;
+  animation-timeline: view();
 
   animation-name: appear;
   animation-fill-mode: both;
