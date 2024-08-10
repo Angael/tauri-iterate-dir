@@ -42,10 +42,10 @@
 
 @keyframes appear {
   0% {
-    object-position: center 100%;
+    object-position: 0% 100%;
   }
 
   100% {
-    object-position: center 0%;
+    object-position: 100% 0%;
   }
 }
