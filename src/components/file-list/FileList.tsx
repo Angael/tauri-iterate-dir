@@ -6,7 +6,7 @@ import TileItem from "./item-views/tile-item/TileItem";
 import { DisplayMode } from "../../stores/displayMode.store";
 import { memo } from "react";
 import MyVirtualizedFileGrid from "./virtualized/MyVirtualizedFileGrid.tsx";
-import { useElementSize } from "@mantine/hooks";
+import { useElementSize, useViewportSize } from "@mantine/hooks";
 import { useSeen } from "./useSeen.ts";
 
 export type FileListProps = {
@@ -25,13 +25,12 @@ const gridSizes: Record<keyof typeof DisplayMode, string> = {
 
 const FileList = (props: FileListProps) => {
   const { paths, onClickPath, onDelete, displayMode } = props;
-  const { ref, width } = useElementSize();
+  const { width } = useViewportSize();
 
   const seen = useSeen();
 
   return (
     <div
-      ref={ref}
       style={
         {
           "--grid-size": gridSizes[displayMode],
@@ -41,7 +40,11 @@ const FileList = (props: FileListProps) => {
       }
     >
       {displayMode === "virtualized_grid" && (
-        <MyVirtualizedFileGrid {...props} width={width} seenList={seen.data} />
+        <MyVirtualizedFileGrid
+          {...props}
+          width={width - 32}
+          seenList={seen.data}
+        />
       )}
       {(displayMode === "grid_sm" || displayMode === "grid_lg") && (
         <div className={css.itemGrid}>
