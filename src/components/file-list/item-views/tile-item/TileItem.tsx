@@ -20,6 +20,8 @@ type Props = HTMLAttributes<HTMLDivElement> & {
   seen: boolean;
 };
 
+document.addEventListener("contextmenu", (event) => event.preventDefault());
+
 const TileItem = ({ file, onClickFile, onDelete, seen, ...other }: Props) => {
   const [isDeleted, setIsDeleted] = useState(false);
   const fileType = getFileType(file.path);
@@ -32,6 +34,16 @@ const TileItem = ({ file, onClickFile, onDelete, seen, ...other }: Props) => {
     onDelete(file);
   };
 
+  const onMouseDown = async (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    if (e.button === 2) {
+      await handleDeleteWithToast(file);
+    } else {
+      onClickFile(file);
+    }
+  };
+
   const addSeen = useAddSeen();
 
   if (isDeleted) {
@@ -41,8 +53,9 @@ const TileItem = ({ file, onClickFile, onDelete, seen, ...other }: Props) => {
   return (
     <div
       className={clsx(css.tileItem, isDeleted && css.hidden, seen && css.seen)}
-      onMouseDown={() => onClickFile(file)}
+      onMouseDown={onMouseDown}
       onMouseEnter={() => addSeen(file.path)}
+      onContextMenu={(e) => e.preventDefault()}
       {...other}
     >
       {fileType === undefined && (

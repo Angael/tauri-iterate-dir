@@ -6,7 +6,7 @@ import TileItem from "./item-views/tile-item/TileItem";
 import { DisplayMode } from "../../stores/displayMode.store";
 import { memo } from "react";
 import MyVirtualizedFileGrid from "./virtualized/MyVirtualizedFileGrid.tsx";
-import { useElementSize, useViewportSize } from "@mantine/hooks";
+import { useViewportSize } from "@mantine/hooks";
 import { useSeen } from "./useSeen.ts";
 
 export type FileListProps = {
