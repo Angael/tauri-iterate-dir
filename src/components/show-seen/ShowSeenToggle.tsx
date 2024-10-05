@@ -1,16 +1,14 @@
 import { SegmentedControl } from "@mantine/core";
 import { useStore } from "@tanstack/react-store";
-import showSeenStore from "../../stores/showSeen";
+import showSeenStore, { SeenMode } from "../../stores/showSeen";
 
 const ShowSeenToggle = () => {
   const showSeen = useStore(showSeenStore);
 
   return (
     <SegmentedControl
-      value={showSeen.showSeen}
-      onChange={(value) =>
-        showSeenStore.setState((p) => ({ ...p, showSeen: value as any }))
-      }
+      value={showSeen}
+      onChange={(value) => showSeenStore.setState((p) => value as SeenMode)}
       data={[
         { label: "Unseen", value: "showUnseen" },
         { label: "Seen", value: "showSeen" },
