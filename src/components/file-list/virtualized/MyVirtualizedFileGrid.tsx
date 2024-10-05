@@ -2,6 +2,8 @@ import { FileListProps } from "../FileList.tsx";
 import { useVirtualizer, useWindowVirtualizer } from "@tanstack/react-virtual";
 import { Fragment, memo, useLayoutEffect, useRef } from "react";
 import TileItem from "../item-views/tile-item/TileItem.tsx";
+import { useStore } from "@tanstack/react-store";
+import showSeenStore from "../../../stores/showSeen.ts";
 
 const columnWidth = 450;
 // const rowHeight = 450;
@@ -14,9 +16,10 @@ const MyVirtualizedFileGrid = ({
   width,
   seenList,
   onClickPath,
-  onDelete,
+  onDelete
 }: Props) => {
   const parentRef = useRef<HTMLDivElement>(null);
+  const showSeen = useStore(showSeenStore);
 
   const columnCount = Math.floor(width / columnWidth);
   const actualColumnWidth = width / columnCount;
@@ -26,7 +29,7 @@ const MyVirtualizedFileGrid = ({
     count: Math.ceil(paths.length / columnCount),
     estimateSize: () => actualHeight,
     overscan: 5,
-    scrollMargin: parentRef.current?.offsetTop ?? 0,
+    scrollMargin: parentRef.current?.offsetTop ?? 0
     // gap: 16,
   });
 
@@ -35,7 +38,7 @@ const MyVirtualizedFileGrid = ({
     count: columnCount,
     getScrollElement: () => parentRef.current,
     estimateSize: () => actualColumnWidth,
-    overscan: 5,
+    overscan: 5
     // gap: 16,
   });
 
@@ -51,7 +54,7 @@ const MyVirtualizedFileGrid = ({
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
             width: `${columnVirtualizer.getTotalSize()}px`,
-            position: "relative",
+            position: "relative"
           }}
         >
           {rowVirtualizer.getVirtualItems().map((virtualRow) => (
@@ -77,7 +80,7 @@ const MyVirtualizedFileGrid = ({
                       top: virtualRow.start,
                       left: virtualColumn.start,
                       width: virtualColumn.size,
-                      height: virtualRow.size,
+                      height: virtualRow.size
                     }}
                     seen={seenList.includes(file.path)}
                   />
