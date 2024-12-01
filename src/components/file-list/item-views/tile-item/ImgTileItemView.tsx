@@ -4,6 +4,7 @@ import css from "./ImgTileItemView.module.css";
 import previewCss from "./PreviewTileItemView.module.css";
 import { FileInList } from "../../../../types/FileInList.type";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
+import clsx from "clsx";
 
 type Props = {
   file: FileInList;
@@ -16,8 +17,13 @@ const ImgTileItemView = (props: Props) => {
   const src = useMemo(() => convertFileSrc(file.path), [file.path]);
 
   return (
-    <div className={previewCss.tileWrapper}>
-      <img src={src} loading="lazy" alt="" className={css.filePreviewImg} />
+    <div className={clsx(previewCss.tileWrapper)}>
+      <img
+        src={src}
+        loading="lazy"
+        alt=""
+        className={clsx(css.filePreviewImg, previewCss.animation)}
+      />
       <Text size="sm" className={previewCss.label} title={label}>
         {label}
       </Text>

@@ -6,6 +6,7 @@ import { FileInList } from "../../../../types/FileInList.type";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import Icon from "@mdi/react";
 import { mdiPlay } from "@mdi/js";
+import clsx from "clsx";
 
 type Props = {
   file: FileInList;
@@ -21,7 +22,7 @@ const VideoTileItemView = (props: Props) => {
     <div className={previewCss.tileWrapper}>
       <video
         src={src}
-        className={css.filePreviewVideo}
+        className={clsx(css.filePreviewVideo, previewCss.animation)}
         controls={false}
         preload="metadata"
       />

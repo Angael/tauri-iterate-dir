@@ -2,7 +2,7 @@ import { Group, Text } from "@mantine/core";
 import {
   keepPreviousData,
   useQuery,
-  useQueryClient,
+  useQueryClient
 } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
@@ -17,10 +17,10 @@ import ActionBar from "../components/action-bar/ActionBar.tsx";
 import FileModal from "../components/file-modal/FileModal.tsx";
 import openFileStore from "../stores/openFile.store.ts";
 import Favourites from "../components/favourites/Favourites.tsx";
+import { sqlite } from "../utils/sqlite.ts";
+import showSeenStore from "../stores/showSeen.ts";
 
-export const Route = createLazyFileRoute("/")({
-  component: Index,
-});
+export const Route = createLazyFileRoute("/")({ component: Index });
 
 function Index() {
   const { path, setPath } = usePathInput(pathStore);
@@ -34,14 +34,32 @@ function Index() {
     })();
   }, [path]);
 
+  const showSeen = useStore(showSeenStore);
   const dir = useQuery({
-    queryKey: ["list_files", path],
+    queryKey: ["list_files", path, showSeen],
     queryFn: async () => {
-      return await invoke<FileInList[]>("list_files", { dir: path });
+      const rows =
+        await sqlite.select<{ path: string }[]>("SELECT * FROM seen");
+
+      const seenPaths = rows.map((row) => row.path);
+
+      const fileList = await invoke<FileInList[]>("list_files", { dir: path });
+
+      if (showSeen === "showAll") return fileList;
+
+      if (showSeen === "showUnseen") {
+        return fileList.filter(
+          (file) => file.isDir || !seenPaths.includes(file.path)
+        );
+      } else {
+        return fileList.filter(
+          (file) => file.isDir || seenPaths.includes(file.path)
+        );
+      }
     },
     placeholderData: keepPreviousData,
     retry: false,
-    retryDelay: 1000,
+    retryDelay: 1000
   });
 
   const onClickPath = useCallback(
@@ -52,25 +70,24 @@ function Index() {
         openFileStore.setState((_) => ({ isOpen: true, file }));
       }
     },
-    [setPath],
+    [setPath]
   );
 
   const onDelete = useCallback(
     async (file: FileInList) => {
-      queryClient.setQueryData(["list_files", path], (data: FileInList[]) => {
-        return data?.filter((f) => f.path !== file.path);
-      });
+      await sqlite.execute(`DELETE FROM seen WHERE path = ?`, [file.path]);
+
       await invoke("delete_file", { path: file.path });
       // TODO: remove from cache, because the file is deleted
-      dir.refetch();
+      // dir.refetch();
     },
-    [queryClient, path, dir],
+    [queryClient, path]
   );
 
   const onNext = useCallback(() => {
     if (!dir.data) return;
     const nextIndex = dir.data.findIndex(
-      (file) => file.path === openFileStore.state.file?.path,
+      (file) => file.path === openFileStore.state.file?.path
     );
     if (nextIndex === -1) return;
     const nextFile = dir.data[nextIndex + 1];
@@ -82,7 +99,7 @@ function Index() {
   const onPrevious = useCallback(() => {
     if (!dir.data) return;
     const prevIndex = dir.data.findIndex(
-      (file) => file.path === openFileStore.state.file?.path,
+      (file) => file.path === openFileStore.state.file?.path
     );
     if (prevIndex === -1) return;
     const prevFile = dir.data[prevIndex - 1];

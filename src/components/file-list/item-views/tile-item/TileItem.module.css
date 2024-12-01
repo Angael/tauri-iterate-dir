@@ -2,13 +2,16 @@
   position: relative;
   width: 100%;
   height: 100%;
+  /* Test if those max widths are necessary for virtual*/
+  /*max-width: var(--grid-size);*/
+  /*max-height: var(--grid-size);*/
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   border-radius: 8px;
-  overflow: hidden;
+  overflow: clip;
 
   outline: transparent solid 2px;
   transition:
@@ -42,4 +45,12 @@
 .tileItem:hover .tileMenu {
   opacity: 1;
   transform: translateX(0);
+}
+
+.hidden {
+  opacity: 0.3;
+}
+
+.seen {
+  outline: var(--mantine-color-red-4) solid 2px !important;
 }

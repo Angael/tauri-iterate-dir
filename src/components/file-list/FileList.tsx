@@ -5,44 +5,68 @@ import NavLinkItem from "./item-views/NavLinkItem";
 import TileItem from "./item-views/tile-item/TileItem";
 import { DisplayMode } from "../../stores/displayMode.store";
 import { memo } from "react";
+import MyVirtualizedFileGrid from "./virtualized/MyVirtualizedFileGrid.tsx";
+import { useViewportSize } from "@mantine/hooks";
+import { useSeen } from "./useSeen.ts";
 
-type Props = {
-  paths: FileInList[];
+export type FileListProps = {
+  paths: FileInList[]; // bad name
   onClickPath: (path: FileInList) => void;
   onDelete: (file: FileInList) => void;
   displayMode: keyof typeof DisplayMode;
 };
 
-const gridSizes = {
+const gridSizes: Record<keyof typeof DisplayMode, string> = {
   grid_sm: "250px",
   grid_lg: "400px",
+  virtualized_grid: "450px",
+  list: "100%",
 };
 
-const FileList = ({ paths, onClickPath, onDelete, displayMode }: Props) => {
-  if (displayMode === "grid_sm" || displayMode === "grid_lg") {
-    return (
-      <div
-        className={css.itemGrid}
-        style={{ "--grid-size": gridSizes[displayMode], flex: 1 } as any}
-      >
-        {paths.map((file) => (
-          <TileItem
-            key={file.path}
-            file={file}
-            onClick={onClickPath}
-            onDelete={onDelete}
-          />
-        ))}
-      </div>
-    );
-  }
+const FileList = (props: FileListProps) => {
+  const { paths, onClickPath, onDelete, displayMode } = props;
+  const { width } = useViewportSize();
+
+  const seen = useSeen();
 
   return (
-    <Stack gap={1} flex={1}>
-      {paths.map((file) => (
-        <NavLinkItem key={file.path} file={file} onClick={onClickPath} />
-      ))}
-    </Stack>
+    <div
+      style={
+        {
+          "--grid-size": gridSizes[displayMode],
+          flex: 1,
+          overflow: "clip",
+        } as any
+      }
+    >
+      {displayMode === "virtualized_grid" && (
+        <MyVirtualizedFileGrid
+          {...props}
+          width={width - 32}
+          seenList={seen.data}
+        />
+      )}
+      {(displayMode === "grid_sm" || displayMode === "grid_lg") && (
+        <div className={css.itemGrid}>
+          {paths.map((file) => (
+            <TileItem
+              key={file.path}
+              file={file}
+              onClickFile={onClickPath}
+              onDelete={onDelete}
+              seen={seen.data.includes(file.path)}
+            />
+          ))}
+        </div>
+      )}
+      {displayMode === "list" && (
+        <Stack gap={1}>
+          {paths.map((file) => (
+            <NavLinkItem key={file.path} file={file} onClick={onClickPath} />
+          ))}
+        </Stack>
+      )}
+    </div>
   );
 };
 

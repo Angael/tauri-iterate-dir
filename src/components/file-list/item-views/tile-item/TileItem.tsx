@@ -6,18 +6,23 @@ import ImgTileItemView from "./ImgTileItemView";
 import css from "./TileItem.module.css";
 import VideoTileItemView from "./VideoTileItemView";
 import { FileType, getFileType } from "../../../../utils/getFileType.ts";
-import { memo, useState } from "react";
+import { HTMLAttributes, memo, useState } from "react";
 import { mdiDelete } from "@mdi/js";
 import { ActionIcon, Stack } from "@mantine/core";
 import Icon from "@mdi/react";
+import clsx from "clsx";
+import { useAddSeen } from "../../useSeen.ts";
 
-type Props = {
+type Props = HTMLAttributes<HTMLDivElement> & {
   file: FileInList;
-  onClick: (file: FileInList) => void;
+  onClickFile: (file: FileInList) => void;
   onDelete: (file: FileInList) => void;
+  seen: boolean;
 };
 
-const TileItem = ({ file, onClick, onDelete }: Props) => {
+document.addEventListener("contextmenu", (event) => event.preventDefault());
+
+const TileItem = ({ file, onClickFile, onDelete, seen, ...other }: Props) => {
   const [isDeleted, setIsDeleted] = useState(false);
   const fileType = getFileType(file.path);
   const { base } = parsePath(file.path);
@@ -29,12 +34,30 @@ const TileItem = ({ file, onClick, onDelete }: Props) => {
     onDelete(file);
   };
 
+  const onMouseDown = async (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    if (e.button === 2) {
+      await handleDeleteWithToast(file);
+    } else {
+      onClickFile(file);
+    }
+  };
+
+  const addSeen = useAddSeen();
+
   if (isDeleted) {
     return null;
   }
 
   return (
-    <div className={css.tileItem} onClick={() => onClick(file)}>
+    <div
+      className={clsx(css.tileItem, isDeleted && css.hidden, seen && css.seen)}
+      onMouseDown={onMouseDown}
+      onMouseEnter={() => addSeen(file.path)}
+      onContextMenu={(e) => e.preventDefault()}
+      {...other}
+    >
       {fileType === undefined && (
         <DefaultTileItemView Icon={fileToIcon(file)} label={base} />
       )}
@@ -48,8 +71,9 @@ const TileItem = ({ file, onClick, onDelete }: Props) => {
 
       <Stack className={css.tileMenu}>
         <ActionIcon
+          size="xl"
           color="red"
-          onClick={async (e) => {
+          onMouseDown={async (e) => {
             e.stopPropagation();
             await handleDeleteWithToast(file);
           }}

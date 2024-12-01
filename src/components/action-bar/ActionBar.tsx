@@ -1,23 +1,25 @@
-import css from "./ActionBar.module.css";
 import {
   ActionIcon,
   Burger,
   Button,
   Flex,
   Group,
-  TextInput,
+  TextInput
 } from "@mantine/core";
-import Icon from "@mdi/react";
 import { mdiArrowLeft, mdiHome, mdiStar } from "@mdi/js";
-import DisplayModeToggle from "../display-mode/DisplayModeToggle.tsx";
-import displayModeStore from "../../stores/displayMode.store.ts";
-import { usePathInput } from "../../utils/usePathInput.ts";
-import pathStore from "../../stores/path.store.ts";
+import Icon from "@mdi/react";
 import { useStore } from "@tanstack/react-store";
-import { sqlite } from "../../utils/sqlite.ts";
-import { useFavourites } from "../favourites/useFavourites.ts";
-import showFavouritesStore from "../../stores/showFavourites.store.ts";
 import { memo } from "react";
+import displayModeStore from "../../stores/displayMode.store.ts";
+import pathStore from "../../stores/path.store.ts";
+import showFavouritesStore from "../../stores/showFavourites.store.ts";
+import showSeenStore from "../../stores/showSeen.ts";
+import { sqlite } from "../../utils/sqlite.ts";
+import { usePathInput } from "../../utils/usePathInput.ts";
+import DisplayModeToggle from "../display-mode/DisplayModeToggle.tsx";
+import { useFavourites } from "../favourites/useFavourites.ts";
+import ShowSeenToggle from "../show-seen/ShowSeenToggle.tsx";
+import css from "./ActionBar.module.css";
 
 type Props = {
   hasPathError: boolean;
@@ -89,7 +91,8 @@ const ActionBar = ({ hasPathError }: Props) => {
           <Icon path={mdiStar} size={1} />
         </ActionIcon>
 
-        <Flex ml="auto">
+        <Flex ml="auto" gap="md">
+          <ShowSeenToggle />
           <DisplayModeToggle
             value={displayMode}
             setValue={(val) => displayModeStore.setState(() => val)}

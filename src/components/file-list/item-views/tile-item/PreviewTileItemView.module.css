@@ -30,3 +30,22 @@
 .tileWrapper:hover .label {
   transform: translateY(-100%);
 }
+
+.animation {
+  animation-timeline: view();
+
+  animation-name: appear;
+  animation-fill-mode: both;
+  animation-duration: 1ms; /* Firefox requires this to apply the animation */
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes appear {
+  0% {
+    object-position: 0% 100%;
+  }
+
+  100% {
+    object-position: 100% 0%;
+  }
+}

@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "camille",
-    "version": "0.0.12"
+    "version": "0.0.16"
   },
   "tauri": {
     "allowlist": {
