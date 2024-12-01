@@ -23,17 +23,16 @@ const FileModal = ({ onNext, onPrev, onDelete }: Props) => {
 
   const src = openFile.file ? convertFileSrc(openFile.file?.path) : "";
 
+  const deleteFile = () => {
+    if (!openFile.file) return;
+    onNext();
+    onDelete(openFile.file);
+  };
+
   useHotkeys([
     ["ArrowLeft", () => onPrev()],
     ["ArrowRight", () => onNext()],
-    [
-      "Delete",
-      () => {
-        if (!openFile.file) return;
-        onNext();
-        onDelete(openFile.file);
-      },
-    ],
+    ["Delete", deleteFile]
   ]);
 
   return (
@@ -44,10 +43,16 @@ const FileModal = ({ onNext, onPrev, onDelete }: Props) => {
       centered
       overlayProps={{
         backgroundOpacity: 0.55,
-        blur: 8,
+        blur: 8
       }}
       withCloseButton={false}
-      size={"xl"}
+      size="auto"
+      onContextMenu={() => {
+        if (!openFile.file) return;
+        deleteFile();
+        onClose();
+      }}
+      className={css.Modal}
     >
       {fileType === FileType.Image && (
         <img className={css.ImgInModal} src={src} />

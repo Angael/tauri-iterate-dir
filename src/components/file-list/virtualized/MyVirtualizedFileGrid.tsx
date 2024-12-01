@@ -67,8 +67,6 @@ const MyVirtualizedFileGrid = ({
                   return <Fragment key={virtualColumn.key} />;
                 }
 
-                console.log(virtualColumn);
-
                 return (
                   <TileItem
                     key={file.path}

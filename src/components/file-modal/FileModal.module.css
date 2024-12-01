@@ -1,3 +1,9 @@
+.Modal {
+  :global(.mantine-Modal-body) {
+    padding: 0;
+  }
+}
+
 .ImgInModal {
   display: block;
   object-fit: contain;

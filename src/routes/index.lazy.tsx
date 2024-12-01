@@ -20,9 +20,7 @@ import Favourites from "../components/favourites/Favourites.tsx";
 import { sqlite } from "../utils/sqlite.ts";
 import showSeenStore from "../stores/showSeen.ts";
 
-export const Route = createLazyFileRoute("/")({
-  component: Index
-});
+export const Route = createLazyFileRoute("/")({ component: Index });
 
 function Index() {
   const { path, setPath } = usePathInput(pathStore);
